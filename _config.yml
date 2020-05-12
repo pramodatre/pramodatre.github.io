@@ -52,5 +52,5 @@ plugins:
 #   - vendor/cache/
 #   - vendor/gems/
 #   - vendor/ruby/
-exclude:
-  - old_home_page/
+# exclude:
+#   - old_home_page/
