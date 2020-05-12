@@ -1,4 +1,4 @@
-I"Þ<p>&lt;!DOCTYPE html&gt;
+I"5×<p>&lt;!DOCTYPE html&gt;
 <!-- saved from url=(0075)file:///Users/pramodanantharam/dev/git/pramodatre.github.io_back/index.html --></p>
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     
@@ -53,35 +53,7 @@
                 <a class="navbar-brand" href="file:///Users/pramodanantharam/dev/git/pramodatre.github.io_back/index.html#page-top">Pramod Anantharam</a>
             </div>
 
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="hidden active">
-                        <a href="file:///Users/pramodanantharam/dev/git/pramodatre.github.io_back/index.html#page-top"></a>
-                    </li>
-					<li class="page-scroll">
-                        <a href="file:///Users/pramodanantharam/dev/git/pramodatre.github.io_back/index.html#research">Research</a>
-                    </li>
-                    <li class="page-scroll">
-                        <a href="file:///Users/pramodanantharam/dev/git/pramodatre.github.io_back/index.html#projects">Projects</a>
-                    </li>
-					<li class="page-scroll">
-                        <a href="file:///Users/pramodanantharam/dev/git/pramodatre.github.io_back/index.html#awards">Awards</a>
-                    </li>
-					<li class="page-scroll">
-                        <a href="file:///Users/pramodanantharam/dev/git/pramodatre.github.io_back/index.html#publications">Publications</a>
-                    </li>
-					<li class="page-scroll">
-                        <a href="file:///Users/pramodanantharam/dev/git/pramodatre.github.io_back/index.html#service">Service</a>
-                    </li>
-					<!--<li class="page-scroll"> -->
-                        <!--<a href="#presentations">Presentations</a> -->
-                    <!--</li> -->
-                    <li class="page-scroll">
-                        <a href="file:///Users/pramodanantharam/dev/git/pramodatre.github.io_back/index.html#contact">Contact</a>
-                    </li>
-                </ul>
-            </div>
+
             <!-- /.navbar-collapse -->
         </div>
         <!-- /.container-fluid -->
