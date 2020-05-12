@@ -4,4 +4,4 @@
 
 layout: home
 ---
-Welcome to my webpage! I'm a Researcher working on Machine Learning and Computer Vision. I enjoy working on projects in my spare time. I like to bike and hike if I'm not doing any projects.
+Welcome to my webpage! I'm a Researcher working on Machine Learning and Computer Vision. I enjoy working on some fun projects in my spare time. I like to bike and hike if I'm not doing any projects.

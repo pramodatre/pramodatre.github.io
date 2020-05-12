@@ -10,5 +10,5 @@ During my Ph.D., I developed techniques to augment machine learning algorithms w
 
 I have published my work at Artificial Intelligence and Intelligent Systems venues such as AAAI, ACM TIST, SDM and ACM Web Science. I have been on technical program committee for conferences and journals such as WWW, ISWC, ESWC, IJCAI, Data Mining and Knowledge Discovery Journal, and IEEE Internet of Things Journal.
 
-Skills: Machine learning, computer vision, predictive analytics, pattern recognition, time-series data modeling, anomaly detection, information extraction from text, knowledge representation and reasoning.
+Skills: Machine learning, Computer Vision, Predictive Analytics, Time-series Data Analysis, Anomaly Detection, Information Extraction, Knowledge Representation and Reasoning.
 
