@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: page
 title: PhD Life
 permalink: /old_home_page/
 ---
