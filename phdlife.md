@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: null
 title: PhD Life
 permalink: /old_site/
 tags: phdlife
