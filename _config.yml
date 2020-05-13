@@ -130,5 +130,6 @@ exclude:
   - README.md
   - screenshot.png
   - vendor
-  - ["old_site"]
   - CNAME
+  - ["old_site"]
+  
