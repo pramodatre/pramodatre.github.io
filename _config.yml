@@ -131,3 +131,4 @@ exclude:
   - screenshot.png
   - vendor
   - ["old_site"]
+  - CNAME
