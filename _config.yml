@@ -2,9 +2,9 @@
 title:       Pramod Anantharam
 email:       pramod.atre@gmail.com
 author:      Pramod Anantharam
-description: ""
+description: "Pramod Anantharam"
 baseurl:     ""
-url:         ""
+url:         "https://pramodatre.github.io"
 date_format: "%b %-d, %Y"
 header_pages:
  - about.md
@@ -24,7 +24,7 @@ bing_verification:
 animated:             false
 show_related_posts:   false
 show_post_footers:    false
-show_social_icons:    false
+show_social_icons:    true
 ajaxify_contact_form: false
 enable_mathjax: false
 extended_fonts: false
@@ -56,7 +56,7 @@ twitter_username:
 skype_username:
 steam_nickname:
 google_plus_id:
-linkedin_username: pramodatre
+linkedin_username: pramodprofile
 angellist_username:
 medium_id:
 bitcoin_url:
@@ -64,6 +64,7 @@ paypal_url:
 flattr_button:
 telegram_username:
 vk_id:
+kaggle: pramodatre
 
 # Post sharing icons
 show_sharing_icons: false
