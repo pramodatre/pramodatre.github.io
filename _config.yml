@@ -52,13 +52,13 @@ github_username: pramodatre
 reddit_username:
 bitbucket_username:
 stackoverflow_id:
-twitter_username:
+twitter_username: pramodatre
 skype_username:
 steam_nickname:
 google_plus_id:
 linkedin_username: pramodprofile
 angellist_username:
-medium_id:
+medium_id: pramod.atre
 bitcoin_url:
 paypal_url:
 flattr_button:
@@ -124,6 +124,7 @@ plugins:
   - jekyll-paginate
   - jekyll-sitemap
   - jekyll-feed
+  - jekyll-spaceship
 # https://github.com/jekyll/jekyll/issues/2938
 exclude:
   - Gemfile
