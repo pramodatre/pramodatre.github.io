@@ -2,9 +2,9 @@
 layout: post
 title:  "Building Tensorflow from Source on MacOS"
 date:   2020-05-10 18:02:41 -0400
-categories: jekyll update
+use_math: false
 ---
-Tensorflow is the default choice if you are working on Computer Vision projects such as image classification, object detection, pose estimation, or just any Machine Learning task. I have a MacBook Pro and while using tensorflow, I noticed a warning when importing tensorflow which stated the following.
+Tensorflow is a popular choice if you are working on Computer Vision projects such as image classification, object detection, pose estimation, or just any Machine Learning task. I have a MacBook Pro and while using tensorflow, I noticed a warning when importing tensorflow which stated the following.
 
 ```shell
 2020-05-08 19:57:50.106998: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
@@ -14,7 +14,7 @@ Tensorflow is the default choice if you are working on Computer Vision projects 
 
 This warning is issued because the tensorflow binary installed using `pip install tensorflow` was not built specifically for my machine. Since the binary should work on a wide varity of devices, the tensorflow binary on pip repository would be built such that it works on majority of the CPUs. Using this generic binary prevents tensorflow from using hardware specific optimizations. These optimizations lead to gain in performance which is especially important when using CPU-only version tensorflow. Since I use CPU-only configuration for tensorflow on my MacBook Pro (I do not have NVIDIA GPUs), this performance gain (up to 300% as mentioned [here](https://stackoverflow.com/questions/47068709/your-cpu-supports-instructions-that-this-tensorflow-binary-was-not-compiled-to-u)) is very much welcome!
 
-If you observe the warning closely, you see `TensorFlow binary was not compiled to use: AVX2 FMA`. AVX (Advanced Vector Extensions) are instruction set extensions and specifically, FMA (Fused Multiply Accumulate) introduced by AVX speeds up linear algebra computation. For more information, you can read the stakoverflow post [here](https://stackoverflow.com/questions/47068709/your-cpu-supports-instructions-that-this-tensorflow-binary-was-not-compiled-to-u).
+If you observe the warning closely, you see `TensorFlow binary was not compiled to use: AVX2 FMA`. AVX (Advanced Vector Extensions) are instruction set extensions and specifically, FMA (Fused Multiply Accumulate) introduced by AVX speeds up linear algebra computation. For more information, you can read the stackoverflow post [here](https://stackoverflow.com/questions/47068709/your-cpu-supports-instructions-that-this-tensorflow-binary-was-not-compiled-to-u).
 
 Motivated by 300% gain I could get, I started following instructions for building tensorflow from source using instructions from [official tensorflow website](https://www.tensorflow.org/install/source) and [stackoverflow post](https://stackoverflow.com/questions/41293077/how-to-compile-tensorflow-with-sse4-2-and-avx-instructions?rq=1).
 
