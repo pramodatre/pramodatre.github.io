@@ -2,6 +2,7 @@
 layout: post
 title:  "Building Tensorflow from Source on MacOS"
 date:   2020-05-10 18:02:41 -0400
+summary: If you like to make the best of your computers' hardware for performance gains up to 300%, you need to build tenforflow from source. This post will provide some tips for building tensorflow on MacOS.
 use_math: false
 ---
 Tensorflow is a popular choice if you are working on Computer Vision projects such as image classification, object detection, pose estimation, or just any Machine Learning task. I have a MacBook Pro and while using tensorflow, I noticed a warning when importing tensorflow which stated the following.
