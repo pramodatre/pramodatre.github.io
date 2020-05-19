@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Disparity Map Computation in Python and C++"
-date:   2020-05-14 06:02:41 -0400
+date:   2020-05-17 06:02:41 -0400
 summary: Disparity map is an essential part of Stereo Vision. This post will walk you through the implementation details with code in python and C++
 use_math: true
 ---
