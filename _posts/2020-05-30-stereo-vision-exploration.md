@@ -9,34 +9,34 @@ Stereo vision is the term used for the process of inferring 3D depth information
 
 
 ## Depth Estimation
-Before we proceed coding, I would like to explain `how can we estimate depth using the disparity map?` Without this motivation, I feel it is pointless to explain disparity map implementation. I had difficulty understanding a specific part of the derivation of depth equation which I will point out later. May be it's just me but thought I will write this up so that it may help someone who may have similar question as I did. A simplified stereo setup with two cameras is shown here. It's a bird's eye view of the camera setup and a point $P$ for which we are trying to estimate the depth/distance form the camera. To estimate depth from stereo implies that we need to estimate $Z$ in the figure. $Z$ is the distance of point $P$ from the camera.
+Before we proceed coding, I would like to explain `how can we estimate depth using the disparity map?` Without this motivation, I feel it is pointless to explain disparity map implementation. I had difficulty understanding a specific part of the derivation of depth equation which I will point out later. May be it's just me, but, I thought of writing this up so that it may help others who may have similar question as I did. A simplified stereo setup with two cameras is shown here. It's a bird's eye view of the camera setup and a point $P$ for which we are trying to estimate the depth/distance form the camera. To estimate depth from stereo implies that we need to estimate $Z$ in the figure. $Z$ is the distance of point $P$ from the camera.
 
-{% include image-small.html img="images/2020-05-30/stereo_geometry.png" title="stereo_geometry" caption="Derivation of depth for a simple stereo example with two cameras with perfectly aligned image and having same focal lengths. (source: CS 4495 Computer Vision – A. Bobick)" url="https://www.cc.gatech.edu/~afb/classes/CS4495-Fall2013/slides/CS4495-06-Stereo.pdf" %}
+{% include image-small.html img="images/2020-05-30/stereo_geometry.png" title="stereo_geometry" caption="Derivation of depth for a simplified stereo setting with two cameras with perfectly aligned centers and having same focal lengths. (source: CS 4495 Computer Vision – A. Bobick)" url="https://www.cc.gatech.edu/~afb/classes/CS4495-Fall2013/slides/CS4495-06-Stereo.pdf" %}
 
 In the above setup, let $C_{L}$ be the camera on the left and $C_{R}$ be the camera on the right. Both these cameras have the same focal length $f$. Distance between camera centers is $B$. A line from point $P$ to the camera center of $C_{L}$ intersects the image plane at $p_{l}$. A line from point $P$ to camera center of $C_{R}$ intersects $C_{R}$'s image plane at $p_{r}$. Note that the triangles $p_{l} P p_{r}$ and $C_{L}PC_{R}$ are similar triangles. Since these triangles are similar, their ratio of base to height should be the same, i.e., $\frac{B}{Z}$ = $\frac{p_{l}p_{r}}{Z-f}$. From the figure, we have $p_{l}p_{r}$ to be $B - (x_{l}+x_{r})$. However, in all the derivations in multiple references, $p_{l}p_{r}$ is told to be $B - x_{l} + x_{r}$ which totally confused me. It is quite clear from the figure, to get $p_{l}p_{r}$ we need to subtract ($x_{l} + x_{r}$) from $B$. 
 
-Let's say I would like to test my hypothesis that $p_{l}p_{r} = B - (x_{l}+x_{r})$. When we use our depth sensing system in practice, we will have to feed in the focal length ($f$), base length ($B$), $x_{l}$, and $x_{r}$ to obtain $Z$ which is the depth estimation for point $P$. $x_{l}$ is a positive value since it is to the right of the camera center line passing through the image plane which serves as the origin. Similarly, $x_{r}$ is a negative number since it is to the left of the $C_{R}$'s center line which serves the origin. Now, if we use the equation $p_{l}p_{r} = B - (x_{l}+x_{r})$ with -ve value for $x_{r}$ we end up adding $x_{r}$ to $B$ instead of subtracting, i.e., we will end up with $p_{l}p_{r} = B - (x_{l}-x_{r}) = B - x_{l} + x_{r}$. This length is incorrect. Say, we used $p_{l}p_{r} = B - (x_{l}-x_{r})$ and since we have $x_{r}$ as negative, $p_{l}p_{r} = B - (x_{l}-(-x_{r})) = B - (x_{l}+x_{r})$. This is the reason we have $-x_{r}$ in the equation to estimate depth from stereo images. Now, a negative sign for $x_{r}$ in the depth estimation equation makes sense to me. So, finally, to estimate depth, we can use the following equation $Z=f \frac{B}{x_{l}-x_{r}}$.
+Let's say I would like to test my hypothesis that $p_{l}p_{r} = B - (x_{l}+x_{r})$. When we use our depth sensing system in practice, we will have to feed in the focal length ($f$), base length ($B$), $x_{l}$, and $x_{r}$ to obtain $Z$ which is the depth estimation for point $P$. $x_{l}$ is a positive value since it is to the right of the camera center line passing through the image plane which serves as the origin. Similarly, $x_{r}$ is a negative number since it is to the left of the $C_{R}$'s center line which serves as the origin. Now, if we use the equation $p_{l}p_{r} = B - (x_{l}+x_{r})$ with -ve value for $x_{r}$ we end up adding $x_{r}$ to $B$ instead of subtracting, i.e., we will end up with $p_{l}p_{r} = B - (x_{l}-x_{r}) = B - x_{l} + x_{r}$. This length is incorrect. Say, we used $p_{l}p_{r} = B - (x_{l}-x_{r})$ and since we have $x_{r}$ as negative, $p_{l}p_{r} = B - (x_{l}-(-x_{r})) = B - (x_{l}+x_{r})$. This is the reason we have $-x_{r}$ in the equation to estimate depth from stereo images. Now, a negative sign for $x_{r}$ in the depth estimation equation makes sense to me. So, finally, to estimate depth, we can use the following equation $Z=f \frac{B}{x_{l}-x_{r}}$.
 
 ## Disparity Map
-Depth is inversely proportional to disparity, i.e., from the depth estimation equation, we have $Z \propto \frac{1}{x_{l}-x_{r}}$. As disparity ($x_{l}-x_{r}$) increases, $Z$ decreases and for lower disparity ($x_{l}-x_{r}$), we would have higher $Z$. This is intuitive if you hold your index finger near your eyes and alternate seeing from your left and right eyes. You will notice that your finger jumps a lot in your view compared to other distant object. We will use a technique called block matching to find the correspondences between pixels in the two images as outlined in [^2]. Here is a summary of steps we need for computing disparity map:
+Depth is inversely proportional to disparity, i.e., from the depth estimation equation, we have $Z \propto \frac{1}{x_{l}-x_{r}}$. As disparity ($x_{l}-x_{r}$) increases, $Z$ decreases and for lower disparity ($x_{l}-x_{r}$), we would have higher $Z$. This is intuitive if you hold your index finger near your eyes and alternate seeing from your left and right eyes. You will notice that your finger jumps a lot in your view compared to other distant objects. We will use a technique called block matching to find the correspondences between pixels in the two images as outlined in [^2]. Here is a summary of steps we need for computing disparity map:
 * Input: Left image and right image (from perfectly aligned cameras) of width $w$ and height $h$, block size in pixels, and search block size
 * Output: Disparity map of width $w$ and height $h$
 * Why do we need to specify block size and search block size?
     * For every pixel in the left image, we need to find the corresponding pixel in the right image. Since pixel values may be noisy and is influenced by many factors such as sensor noise, lighting, mis-alignment, etc., we may have to rely on a group of surrounding pixels for comparison. 
-    * ***Block size*** refers to the neighborhood size we select to compare pixels from left image and the right image specified as number of pixels in height and width. An example block is shown as a white box in both left and right images.
-    * ***Search block size*** refers to a rectangle (shown in black on the right image) in which we will search for best matching block. Notice that in the third figure, you will have to move the white smaller rectangle to the left to get a best match of pixel similarity.
+    * ***Block size*** refers to the neighborhood size we select to compare pixels from left image and the right image specified as number of pixels in height and width. An example block is shown as a white box in both left and right images in Figure 1.
+    * ***Search block size*** refers to a rectangle (shown in black on the right image) in which we will search for best matching block. Notice that for the selected block from the left image, to get the corresponding image region, you will have to move the white smaller rectangle to the left in the black rectangle as shown in the third image in Figure 1.
 
-{% include image.html img="images/2020-05-30/block_matching.png" title="block_matching" caption="Block matching example. (Image source: Middlebury Stereo Datasets)" url="http://vision.middlebury.edu/stereo/data/scenes2003/" %}
+{% include image.html img="images/2020-05-30/block_matching.png" title="block_matching" caption="Figure 1. Block matching example. (Image source: Middlebury Stereo Datasets)" url="http://vision.middlebury.edu/stereo/data/scenes2003/" %}
 
 * For a pixel in the left image, select the pixels in it's neighborhood specified as block size from the left image. 
-* Compute similarity score for each block (same size as block size) selected from the search block and keep sliding the block by one pixel within the search block. Record all the similarity scores.
-* Find the highest pixel similarity score and use the pixel at the block center as the corresponding pixel for the left pixel/block we are trying to find the best match.
-* If $x_{l}$ is the column index of the left pixel, and the highest similarity score was obtained for a block on the right image whose center is the pixel with column in index $x_{r}$, we will note the disparity value of $\left\|x_{l}-x_{r}\right\|$ for the location of left image pixel.
+* Compute similarity score by comparing each block from the left image (same size as block size) and each block selected from the search block in the right image. Slide block on the right image by one pixel within the search block (black rectangle). Record all the similarity scores.
+* Find the highest pixel similarity score from the previous step. For the block with highest similarity, return the pixel location at the center of the block as the best matching pixel.
+* If $x_{l}$ is the column index of the left pixel, and the highest similarity score was obtained for a block on the right image whose center pixel has column index $x_{r}$, we will note the disparity value of $\left\|x_{l}-x_{r}\right\|$ for the location of left image pixel.
 * Repeat the matching process for each pixel in the left image and note all the disparity values for the left image pixel index.
 * We will start building the basic building blocks first and later combine these building blocks to compute disparity map.
 
 ### Similarity metric
-We need to define a notion of similarity between two blocks of pixels. Sum of absolute difference between pixel values is an intuitive metric for similarity. For example, the pair (3,5) is more similar compared to the pair (3,6) since the absolute difference between numbers in the first pair |3 - 5| < difference between numbers in the second pair |3 - 6|, i.e., 2 < 3. If there are multiple such values for comparison, we sum up the differences. Hence, we will implement sum of absolute difference method. We will loop over each row ($i$) and column ($j$) in both left and right blocks we are given using $\Sigma_{i,j} |B_{i,j}^{l} - B_{i,j}^{r}|$. Pixel blocks with lower sum of absolute difference value are more similar than pixel blocks with higher sum of absolute difference value.
+We need to define a notion of similarity between two blocks of pixels. Sum of absolute difference between pixel values is an intuitive metric for similarity. For example, the pair (3,5) is more similar compared to the pair (3,6) since the absolute difference between numbers in the first pair |3 - 5| < difference between numbers in the second pair |3 - 6|, i.e., 2 < 3. If there are multiple such values for comparison, we sum up the differences. Let's implement sum of absolute difference method to be used for comparing blocks of pixels. We will loop over each row ($i$) and column ($j$) in both left and right blocks using $\Sigma_{i,j} |B_{i,j}^{l} - B_{i,j}^{r}|$. Pixel blocks with lower sum of absolute difference value are more similar than pixel blocks with higher sum of absolute difference value.
 
 {% highlight python %}
 import numpy as np
@@ -57,7 +57,7 @@ def sum_of_abs_diff(pixel_vals_1, pixel_vals_2):
 {% endhighlight %}
 
 ### Block comparisons
-We can compare a block of pixels from the left image with a block of pixels in the right image using the `sum_of_abs_diff` method we just defined. However, note that we need to compare a single block of pixels in the left image to multiple block of pixels on the right image (like we defined in `Why do we need to specify block size and search block size?`). These multiple blocks are to be selected within the search block shown as a black rectangle in the above figure. We will slide the white box one pixel at a time (starting from left) to get candidate blocks for comparison from the right image. We note the block from the right image that has lowest sum of absolute difference score. The corresponding row and column index (y, x) is returned by our implementation here.
+We can compare a block of pixels from the left image with a block of pixels in the right image using the `sum_of_abs_diff` method we just defined. However, note that we need to compare a single block of pixels in the left image to multiple blocks of pixels on the right image (like we defined in `Why do we need to specify block size and search block size?`). These multiple blocks are to be selected within the search block shown as a black rectangle in Figure 1. We will slide the white box one pixel at a time starting from left most position within the black box to get candidate blocks for comparison from the right image. We note the block from the right image that has lowest sum of absolute difference score. The corresponding row and column index (y, x) is returned by our implementation here.
 
 {% highlight python %}
 BLOCK_SIZE = 7
@@ -108,7 +108,7 @@ def compare_blocks(y, x, block_left, right_array, block_size=5):
 {% endhighlight %}
 
 ### Disparity calculation
-We can use the block comparison implementation to compute disparity values for every pixel between left and right images. As explained earlier, we will use a pixel blocks (neighboring pixels) to find pixel correspondences between left and right images. To do this, for a pixel at row $r$ and column $c$ from the left image, we select block of pixels $b_{r, c}$ from the left image using BLOCK_SIZE parameter. We invoke block comparison for $b_{r, c}$ and get back min_index containing row and column index of the best matching pixel from the right image, $(y, x)$. For the pixel (r, c) of the left image, the best matching pixel from the right image is at (y, x). The disparity for pixel (r, c) is computed using $|c - x|$. We need to compute disparity for each pixel of the left image and collect disparity values in a matrix of size width and height of the left/right image.
+We can use the block comparison implementation to compute disparity values for every pixel between left and right images. As explained earlier, we will use a pixel blocks (neighboring pixels) to find pixel correspondences between left and right images. To do this, for a pixel at row $r$ and column $c$ from the left image, we select block of pixels $b_{r, c}$ from the left image using BLOCK_SIZE parameter. We invoke block comparison for $b_{r, c}$ and get back min_index containing row and column index of the best matching pixel from the right image, (y, x). For the pixel (r, c) of the left image, the best matching pixel from the right image is at (y, x). The disparity for pixel (r, c) is computed using $|c - x|$. We need to compute disparity for each pixel of the left image and collect disparity values in a matrix of size width and height of the left/right image.
 
 {% highlight python %}
 h, w = input_image.shape
@@ -118,7 +118,7 @@ disparity_map[y, x] = abs(min_index[1] - x)
 {% endhighlight %}
 
 ### Disparity map
-Let's now setup a loop to go over each pixel in the left image, select a block of pixels from the left image, invoke compare_blocks, compute disparity values, and store disparity values in a disparity matrix which we call the disparity map.
+Let's now setup a loop to go over each pixel in the left image, select a block of pixels from the left image, invoke compare_blocks, compute disparity values, and store disparity values in a matrix referred to as the disparity map. The indexing used here is quite lossy and a careful consideration may help in reducing loss of disparity values at image borders.
 
 {% highlight python %}
 for y in tqdm(range(BLOCK_SIZE, h-BLOCK_SIZE)):
@@ -131,19 +131,19 @@ for y in tqdm(range(BLOCK_SIZE, h-BLOCK_SIZE)):
             disparity_map[y, x] = abs(min_index[1] - x)
 {% endhighlight %}
 
-Here is a visualization of the disparity map computed for left and right images shown above.
+Here is a visualization of the disparity map computed for left and right images shown in Figure 1.
 
-{% include image-small.html img="images/2020-05-30/disparity_image.png" title="disparity_map" caption="Visualization of disparity values computed using left and right image of the scene shown in the first figure. Hot/lighter color indicates higher value of disparity and cooler/darker color indicates lower value of disparity" %}
+{% include image.html img="images/2020-05-30/disparity_image.png" title="disparity_map" caption="Figure 2. Visualization of disparity values computed using left and right image of the scene shown in the first figure. Hot/lighter color indicates higher value of disparity and cooler/darker color indicates lower value of disparity" %}
 
 We use `tqdm` to show progress and note the time it takes to compute the disparity map in python. 
 {% include image.html img="images/2020-05-30/run_time_python.png" title="run_time_python" caption="Disparity map computation run time" %}
 
-Disparity map computation using this python took `2 minutes 37 seconds` for left and right images of size (height=375, width=450). I was quite disappointed by this slow run-time for such a small image size and wondered about the practical use of my python implementation. There are many optimizations proposed in [^2] and [^3]. The most obvious one for me is at least use all the compute power on my machine. Since python cannot take advantage of all the cores on my machine, I thought of using C++ to parallelize the disparity map computation. 
+Disparity map computation using this python implementation took `2 minutes 37 seconds` for left and right images of size (height=375, width=450). I was quite disappointed by this slow run-time for such a small image size and wondered about the practical use of my python implementation. There are many optimizations proposed in [^2] and [^3]. The most obvious one for me is to use all the compute power on my machine. Since python cannot take advantage of all the cores on my machine, I was motivated to use C++ to parallelize the disparity map computation. 
 
 ## Parallel implementation in C++
-Comparing pixel blocks from the left image (white box, left image) with the pixel blocks (white box, right image) selected from the search block (black rectangle in the first figure) of the right image can be done in parallel. A naive approach may be to create a thread pool and assign a single block comparison to a thread. Later, after block comparison for each pixel in the left image, we accumulate all the results into a disparity map. One concern is the cost of spawning a thread and later aggregating all the results which probably impedes the benefits of parallelizing this computation. 
+Comparing pixel blocks from the left image (white box) with the pixel blocks from the right image can be done in parallel. A naive approach may be to create a thread pool and assign a single block comparison to a thread. Later, after block comparison for each pixel in the left image, we accumulate all the results into a disparity map. One concern is the cost of spawning a thread and later aggregating all the results which probably impedes the benefits of parallelizing this computation. 
 
-A slightly practical approach to parallelize is to find the number of cores on the machine where the disparity map computation to inform the task distribution. We can split disparity map computation into $n$ chunks where $n$ is the number of cores on your machine. Think of the left image and right image as 2D space split into $n$ horizontal strips. We will compute disparity map for each strip pair (one from left image and another from right image) in parallel. Later, we will combine the $n$ disparity maps into a single disparity map. Since this approach leverages all the cores on the machine, we should see a gain in performance.
+A slightly practical approach to parallelize this computation is to find the number of cores on the machine where you would compute the disparity map and split the computation accordingly. We can split disparity map computation into $n$ chunks where $n$ is the number of cores on your machine. Think of the left image and right image as 2D space split into $n$ horizontal strips. We will compute disparity map for each strip pair (one from left image and another from right image) in parallel. Later, we will combine the $n$ disparity maps into a single disparity map. Since this approach leverages all the cores on the machine, we should see a gain in performance.
 
 ### Similarity metric and block comparisons
 Let's start with some basic methods we need. First, we need a method to compare blocks selected from left and right images. We will write a general method that can do block comparison for a given pixel location and pixel block width and height. Method compare_blocks implemented here returns the disparity value for a specified pixel index (row, col) and block size (width, height).
@@ -203,7 +203,7 @@ int compare_blocks(const int row, const int col, const int width, const int heig
 {% endhighlight %}
 
 ### Disparity calculation
-We can invoke block comparisons for each pixel in the left image using the following set-up. Here, the start and end rows and columns of the chunks are passed as argument. I will next describe the derivation of these indexes.
+We can invoke block comparisons for each pixel in the left image using the following set-up. Here, the start and end rows and columns of the chunks are passed as arguments. I will next describe the derivation of these indexes.
 
 {% highlight C++ %}
 void compute_disparity(int start_chunk_row, int end_chunk_row, int start_chunk_col, int end_chunk_col, Mat *left_img, Mat *right_img, Mat *disparity_map)
@@ -251,7 +251,7 @@ vector<int> get_chunk_indices(int max, int num_chunks)
 {% endhighlight %}
 
 ### Spawning threads
-We will spawn specified number of threads and on each thread we will compute disparity values for a single chunk. Each thread populates the disparity map and when all the threads finish, disparity_map will contain the final disparity map.  
+We will spawn specified number of threads and on each thread we will compute disparity values for a single chunk which contains left and right image strips for which we are computing the disparity values. Each thread populates the disparity map and when all the threads finish, disparity_map will contain the final disparity map.  
 
 {% highlight C++ %}
 static const int num_threads = 8;
@@ -263,7 +263,7 @@ for (int i = 0; i < height_chunks.size() - 1; ++i)
 }
 {% endhighlight %}
 
-Here is the console output for the parallelize computation of disparity map. Complete disparity map calculation took just `6 seconds`! Just to recap, with the python implementation, disparity map calculation took `2 minutes, 37 seconds`. Using this C++ implementation, we get 26X gain in speed of computing the disparity map.
+Here is the console output for the parallelized computation of disparity map. Complete disparity map calculation took just `6 seconds`! Just to recap, with the python implementation, disparity map calculation took `2 minutes, 37 seconds`. Using this C++ implementation, we get 26X gain in speed for computing the disparity map.
 
 {% highlight code %}
 $ g++ $(pkg-config --cflags --libs opencv4) -std=c++11 stereo_vision_parallel.cpp -o stereo_vision
@@ -277,10 +277,10 @@ Execution time: 6 seconds (0.1) mins
 {% endhighlight %}
 
 Here the visualization of the disparity map calculated using the parallel implementation.
-{% include image-small.html img="images/2020-05-30/disparity_image_cpp.png" title="disparity_image_cpp" caption="Visualization of disparity values computed using parallel implementation in C++. Hot/lighter color indicates higher value of disparity and cooler/darker color indicates lower value of disparity" %}
+{% include image.html img="images/2020-05-30/disparity_image_cpp.png" title="disparity_image_cpp" caption="Figure 3. Visualization of disparity values computed using parallel implementation in C++. Hot/lighter color indicates higher value of disparity and cooler/darker color indicates lower value of disparity" %}
 
 ### Conclusion
-We were able to implement the basic idea of stereo vision to compute disparity values. Without any optimizations, the python implementation is too slow for any practical use. With parallel implementation, we reduced the running time for 375 by 450 pixels image form `2 minutes 37 seconds` to just `6 seconds`. Even though this is a significant jump in performance, it is far from practical use for any real-time systems that rely on stereo to estimate its environment. For example, a robot using vision guided navigation cannot afford to spend 6 seconds for processing two frames (one from left and and another from right camera). A far more optimized computation is necessary especially for real-time consumption of depth information.
+We were able to implement the basic idea of Stereo Vision to compute disparity values. Hope you enjoyed translating Stereo Vision ideas to working code! Without any optimizations, the python implementation is too slow for any practical use. With parallel implementation, we reduced the running time for 375 by 450 pixels image form `2 minutes 37 seconds` to just `6 seconds`. Even though this is a significant jump in performance, it is far from practical use for any real-time systems that rely on stereo to estimate its environment. For example, a robot using vision guided navigation cannot afford to spend 6 seconds for processing two frames (one from left and and another from right camera). A far more optimized computation is necessary especially for real-time consumption of depth information.
 
 **All the source code presented in this post can be found [here](https://github.com/pramodatre/cv-algorithms/tree/master/stereo_vision)**
 
