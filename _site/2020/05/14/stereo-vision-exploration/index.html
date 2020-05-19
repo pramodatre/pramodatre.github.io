@@ -1,19 +1,191 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
-  <channel>
-    <title></title>
-    <link>http://localhost:4000</link>
-    <description>
-      Pramod Anantharam
-    </description>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Disparity Map Computation in Python and C++ – Pramod Anantharam</title>
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link rel="dns-prefetch" href="//maxcdn.bootstrapcdn.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Disparity map is an essential part of Stereo Vision. This post will walk you through the implementation details with code in python and C++">
+    <link rel="manifest" type="application/manifest+json; charset=utf-8" href="/manifest.json">
+    <meta name="robots" content="all">
+    <meta name="author" content="Pramod Anantharam">
+    
+    <meta name="keywords" content="">
+    <link rel="canonical" href="http://localhost:4000/2020/05/14/stereo-vision-exploration/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Pramod Anantharam" href="/feed.xml">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?202005190614" type="text/css">
+
+    <!-- Fonts -->
+    
+    <link href="//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic" rel="stylesheet" type="text/css">
+    <link href="//fonts.googleapis.com/css?family=Lato:900,300" rel="stylesheet" type="text/css">
+    
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- MathJax -->
+    
+
+    <!-- Verifications -->
+    
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Disparity Map Computation in Python and C++">
+    <meta property="og:description" content="Pramod Anantharam">
+    <meta property="og:url" content="http://localhost:4000/2020/05/14/stereo-vision-exploration/">
+    <meta property="og:site_name" content="Pramod Anantharam">
+    
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    
+        <meta name="twitter:site" content="@pramodatre">
+        <meta name="twitter:creator" content="@pramodatre">
+    
+    <meta name="twitter:title" content="Disparity Map Computation in Python and C++">
+    <meta name="twitter:description" content="Disparity map is an essential part of Stereo Vision. This post will walk you through the implementation details with code in python and C++">
+    <meta name="twitter:url" content="http://localhost:4000/2020/05/14/stereo-vision-exploration/">
+    
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+    <link rel="shortcut icon" href="/favicon.ico">
+
+    
+<script src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">MathJax.Hub.Config({         tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] }       });</script>
+</head>
+
+<body class="site">
+  
+	
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="/" class="site-title">Pramod Anantharam</a>
+      <nav class="site-nav">
         
-            <item>
-                <title>Disparity Map Computation in Python and C++</title>
-                <link>http://localhost:4000/2020/05/14/stereo-vision-exploration/</link>
-                <content:encoded>
-                    <![CDATA[
-                    <p>Stereo vision is the term used for the process of inferring 3D depth information from 2D images <sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup>. 2D images may be from a Stereo Rig, usually consisting of two cameras slightly displaced horizontally similar to our two eyes. In fact, stereopsis <sup id="fnref:1:1"><a href="#fn:1" class="footnote">1</a></sup> takes inspiration from our ability to infer depth information using our eyes. For a deeper explanation of stereo vision, you can refer to <sup id="fnref:2"><a href="#fn:2" class="footnote">2</a></sup> <sup id="fnref:3"><a href="#fn:3" class="footnote">3</a></sup>. A comprehensive and clear explanation of Stereo Vision is presented here <sup id="fnref:4"><a href="#fn:4" class="footnote">4</a></sup>. If you would like to understand depth calculation clearly, you can refer to <sup id="fnref:5"><a href="#fn:5" class="footnote">5</a></sup>. In this post, I will walk you through the implementation steps in python and subsequent parallel implementation in C++.</p>
+
+
+
+    
+    
+    
+    
+        <a class="nav-link" href="/about/">About Me</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a class="nav-link" href="/old_site/">PhD Life</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a class="nav-link" href="/contact/">Say Hello</a>
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/pramodatre"></a>
+    
+    
+    
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+      <a class="fa fa-twitter" href="https://twitter.com/pramodatre"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:pramod.atre@gmail.com"></a>
+    
+    
+      <a class="fa fa-linkedin" href="https://www.linkedin.com/in/pramodprofile"></a>
+    
+    
+    
+      <a class="fa fa-medium" href="https://medium.com/@pramod.atre"></a>
+    
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>Disparity Map Computation in Python and C++</h1>
+  <span class="post-meta">May 14, 2020</span><br>
+  
+  <span class="post-meta small">
+  
+    17 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <p>Stereo vision is the term used for the process of inferring 3D depth information from 2D images <sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup>. 2D images may be from a Stereo Rig, usually consisting of two cameras slightly displaced horizontally similar to our two eyes. In fact, stereopsis <sup id="fnref:1:1"><a href="#fn:1" class="footnote">1</a></sup> takes inspiration from our ability to infer depth information using our eyes. For a deeper explanation of stereo vision, you can refer to <sup id="fnref:2"><a href="#fn:2" class="footnote">2</a></sup> <sup id="fnref:3"><a href="#fn:3" class="footnote">3</a></sup>. A comprehensive and clear explanation of Stereo Vision is presented here <sup id="fnref:4"><a href="#fn:4" class="footnote">4</a></sup>. If you would like to understand depth calculation clearly, you can refer to <sup id="fnref:5"><a href="#fn:5" class="footnote">5</a></sup>. In this post, I will walk you through the implementation steps in python and subsequent parallel implementation in C++.</p>
 
 <h2 id="depth-estimation">Depth Estimation</h2>
 <p>Before we proceed coding, I would like to explain <code class="highlighter-rouge">how can we estimate depth using the disparity map?</code> Without this motivation, I feel it is pointless to explain disparity map implementation. I had difficulty understanding a specific part of the derivation of depth equation which I will point out later. May be it’s just me but thought I will write this up so that it may help someone who may have similar question as I did. A simplified stereo setup with two cameras is shown here. It’s a bird’s eye view of the camera setup and a point $P$ for which we are trying to estimate the depth/distance form the camera. To estimate depth from stereo implies that we need to estimate $Z$ in the figure. $Z$ is the distance of point $P$ from the camera.</p>
@@ -23,7 +195,7 @@
     
     <a href="https://www.cc.gatech.edu/~afb/classes/CS4495-Fall2013/slides/CS4495-06-Stereo.pdf" title="stereo_geometry" target="_blank">
     
-        <img src="http://localhost:4000/images/2020-05-30/stereo_geometry.png" alt="stereo_geometry" />
+        <img src="http://localhost:4000/images/2020-05-30/stereo_geometry.png" alt="stereo_geometry">
     
     </a>
     
@@ -44,8 +216,10 @@
   <li>Why do we need to specify block size and search block size?
     <ul>
       <li>For every pixel in the left image, we need to find the corresponding pixel in the right image. Since pixel values may be noisy and is influenced by many factors such as sensor noise, lighting, mis-alignment, etc., we may have to rely on a group of surrounding pixels for comparison.</li>
-      <li><strong><em>Block size</em></strong> refers to the neighborhood size we select to compare pixels from left image and the right image specified as number of pixels in height and width. An example block is shown as a white box in both left and right images.</li>
-      <li><strong><em>Search block size</em></strong> refers to a rectangle (shown in black on the right image) in which we will search for best matching block. Notice that in the third figure, you will have to move the white smaller rectangle to the left to get a best match of pixel similarity.</li>
+      <li>
+<strong><em>Block size</em></strong> refers to the neighborhood size we select to compare pixels from left image and the right image specified as number of pixels in height and width. An example block is shown as a white box in both left and right images.</li>
+      <li>
+<strong><em>Search block size</em></strong> refers to a rectangle (shown in black on the right image) in which we will search for best matching block. Notice that in the third figure, you will have to move the white smaller rectangle to the left to get a best match of pixel similarity.</li>
     </ul>
   </li>
 </ul>
@@ -55,7 +229,7 @@
     
     <a href="http://vision.middlebury.edu/stereo/data/scenes2003/" title="block_matching" target="_blank">
     
-        <img src="http://localhost:4000/images/2020-05-30/block_matching.png" alt="block_matching" />
+        <img src="http://localhost:4000/images/2020-05-30/block_matching.png" alt="block_matching">
     
     </a>
     
@@ -166,7 +340,7 @@
 <!-- _includes/image.html -->
 <div class="image-wrapper-small">
     
-        <img src="http://localhost:4000/images/2020-05-30/disparity_image.png" alt="disparity_map" />
+        <img src="http://localhost:4000/images/2020-05-30/disparity_image.png" alt="disparity_map">
     
     
         <p class="image-caption">Visualization of disparity values computed using left and right image of the scene shown in the first figure. Hot/lighter color indicates higher value of disparity and cooler/darker color indicates lower value of disparity</p>
@@ -177,7 +351,7 @@
 <!-- _includes/image.html --></p>
 <div class="image-wrapper">
     
-        <img src="http://localhost:4000/images/2020-05-30/run_time_python.png" alt="run_time_python" />
+        <img src="http://localhost:4000/images/2020-05-30/run_time_python.png" alt="run_time_python">
     
     
         <p class="image-caption">Disparity map computation run time</p>
@@ -316,7 +490,7 @@ Execution time: 6 seconds (0.1) mins</code></pre></figure>
 <!-- _includes/image.html --></p>
 <div class="image-wrapper-small">
     
-        <img src="http://localhost:4000/images/2020-05-30/disparity_image_cpp.png" alt="disparity_image_cpp" />
+        <img src="http://localhost:4000/images/2020-05-30/disparity_image_cpp.png" alt="disparity_image_cpp">
     
     
         <p class="image-caption">Visualization of disparity values computed using parallel implementation in C++. Hot/lighter color indicates higher value of disparity and cooler/darker color indicates lower value of disparity</p>
@@ -328,92 +502,73 @@ Execution time: 6 seconds (0.1) mins</code></pre></figure>
 
 <p><strong>All the source code presented in this post can be found <a href="https://github.com/pramodatre/cv-algorithms/tree/master/stereo_vision">here</a></strong></p>
 
-<hr />
+<hr>
 <div class="footnotes">
   <ol>
     <li id="fn:1">
-      <p>Forsyth, D., &amp; Ponce, J. (2003). Computer vision: A modern approach. Upper Saddle River, N.J: Prentice Hall. <a href="#fnref:1" class="reversefootnote">&#8617;</a> <a href="#fnref:1:1" class="reversefootnote">&#8617;<sup>2</sup></a></p>
+      <p>Forsyth, D., &amp; Ponce, J. (2003). Computer vision: A modern approach. Upper Saddle River, N.J: Prentice Hall. <a href="#fnref:1" class="reversefootnote">↩</a> <a href="#fnref:1:1" class="reversefootnote">↩<sup>2</sup></a></p>
     </li>
     <li id="fn:2">
-      <p>http://mccormickml.com/2014/01/10/stereo-vision-tutorial-part-i/ <a href="#fnref:2" class="reversefootnote">&#8617;</a> <a href="#fnref:2:1" class="reversefootnote">&#8617;<sup>2</sup></a> <a href="#fnref:2:2" class="reversefootnote">&#8617;<sup>3</sup></a></p>
+      <p>http://mccormickml.com/2014/01/10/stereo-vision-tutorial-part-i/ <a href="#fnref:2" class="reversefootnote">↩</a> <a href="#fnref:2:1" class="reversefootnote">↩<sup>2</sup></a> <a href="#fnref:2:2" class="reversefootnote">↩<sup>3</sup></a></p>
     </li>
     <li id="fn:3">
-      <p>http://mccormickml.com/assets/StereoVision/Stereo%20Vision%20-%20Mathworks%20Example%20Article.pdf <a href="#fnref:3" class="reversefootnote">&#8617;</a> <a href="#fnref:3:1" class="reversefootnote">&#8617;<sup>2</sup></a></p>
+      <p>http://mccormickml.com/assets/StereoVision/Stereo%20Vision%20-%20Mathworks%20Example%20Article.pdf <a href="#fnref:3" class="reversefootnote">↩</a> <a href="#fnref:3:1" class="reversefootnote">↩<sup>2</sup></a></p>
     </li>
     <li id="fn:4">
-      <p>http://vision.deis.unibo.it/~smatt/Seminars/StereoVision.pdf <a href="#fnref:4" class="reversefootnote">&#8617;</a></p>
+      <p>http://vision.deis.unibo.it/~smatt/Seminars/StereoVision.pdf <a href="#fnref:4" class="reversefootnote">↩</a></p>
     </li>
     <li id="fn:5">
-      <p>https://www.cc.gatech.edu/~afb/classes/CS4495-Fall2013/slides/CS4495-06-Stereo.pdf <a href="#fnref:5" class="reversefootnote">&#8617;</a></p>
+      <p>https://www.cc.gatech.edu/~afb/classes/CS4495-Fall2013/slides/CS4495-06-Stereo.pdf <a href="#fnref:5" class="reversefootnote">↩</a></p>
     </li>
   </ol>
 </div>
 
-                    ]]>
-                </content:encoded>
-                <guid isPermaLink="false">/2020/05/14/stereo-vision-exploration/</guid>
-                <description>
-                    
-                    Disparity map is an essential part of Stereo Vision. This post will walk you through the implementation details with code in python and C++
-                    
-                </description>
-                <pubDate>Thu, 14 May 2020 06:02:41 -0400</pubDate>
-                <author>Pramod Anantharam</author>
-            </item>
-        
-    
-        
-            <item>
-                <title>Building Tensorflow from Source on MacOS</title>
-                <link>http://localhost:4000/2020/05/10/build-tf-from-source-on-mac/</link>
-                <content:encoded>
-                    <![CDATA[
-                    <p>Tensorflow is a popular choice if you are working on Computer Vision projects such as image classification, object detection, pose estimation, or just any Machine Learning task. I have a MacBook Pro and while using tensorflow, I noticed a warning when importing tensorflow which stated the following.</p>
+</article>
 
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2020-05-08 19:57:50.106998: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
-2020-05-08 19:57:50.128346: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x7febdd364b60 initialized <span class="k">for </span>platform Host <span class="o">(</span>this does not guarantee that XLA will be used<span class="o">)</span><span class="nb">.</span> Devices:
-2020-05-08 19:57:50.128370: I tensorflow/compiler/xla/service/service.cc:176] StreamExecutor device <span class="o">(</span>0<span class="o">)</span>: Host, Default Version
-</code></pre></div></div>
 
-<p>This warning is issued because the tensorflow binary installed using <code class="highlighter-rouge">pip install tensorflow</code> was not built specifically for my machine. Since the binary should work on a wide varity of devices, the tensorflow binary on pip repository would be built such that it works on majority of the CPUs. Using this generic binary prevents tensorflow from using hardware specific optimizations. These optimizations lead to gain in performance which is especially important when using CPU-only version tensorflow. Since I use CPU-only configuration for tensorflow on my MacBook Pro (I do not have NVIDIA GPUs), this performance gain (up to 300% as mentioned <a href="https://stackoverflow.com/questions/47068709/your-cpu-supports-instructions-that-this-tensorflow-binary-was-not-compiled-to-u">here</a>) is very much welcome!</p>
 
-<p>If you observe the warning closely, you see <code class="highlighter-rouge">TensorFlow binary was not compiled to use: AVX2 FMA</code>. AVX (Advanced Vector Extensions) are instruction set extensions and specifically, FMA (Fused Multiply Accumulate) introduced by AVX speeds up linear algebra computation. For more information, you can read the stackoverflow post <a href="https://stackoverflow.com/questions/47068709/your-cpu-supports-instructions-that-this-tensorflow-binary-was-not-compiled-to-u">here</a>.</p>
 
-<p>Motivated by 300% gain I could get, I started following instructions for building tensorflow from source using instructions from <a href="https://www.tensorflow.org/install/source">official tensorflow website</a> and <a href="https://stackoverflow.com/questions/41293077/how-to-compile-tensorflow-with-sse4-2-and-avx-instructions?rq=1">stackoverflow post</a>.</p>
 
-<p><strong>Before you build the code, if your MacOS version is &lt; 10.14, I would recommend to upgrade it to 10.14 before you proceed</strong>. I lost lot of time since I initially started with 10.13 MacOS version and Python 3.7 version and finally could not install the *.whl file using the pip command (this is the last step which will be outlined later). Note that building tensorflow from source is time consuming and memory intensive.</p>
 
-<p>I followed these instructions to build tensorflow from source: https://www.tensorflow.org/install/source</p>
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname  = 'https-pramodatre-github-io';
+    var disqus_identifier = '/2020/05/14/stereo-vision-exploration';
+    var disqus_title      = "Disparity Map Computation in Python and C++";
 
-<p>Some issues and resolutions that worked for me:</p>
-<ul>
-  <li>I had to explicit select Xcode using <code class="highlighter-rouge">sudo xcode-select -s /Applications/Xcode.app/Contents/Developer</code> otherwise, I got compile errors when running <code class="highlighter-rouge">bazel build //tensorflow/tools/pip_package:build_pip_package</code></li>
-  <li>Having issues as I’m unable to install using <code class="highlighter-rouge">pip install /tmp/tensorflow_pkg/tensorflow-version-tags.whl</code>. I’m getting the following error
-    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">(</span>tf-build<span class="o">)</span> Pramods-MacBook-Pro:tensorflow pramodanantharam<span class="nv">$ </span>pip <span class="nb">install</span> /tmp/tensorflow_pkg/tensorflow-2.2.0-cp37-cp37m-macosx_10_14_x86_64.whl
-ERROR: tensorflow-2.2.0-cp37-cp37m-macosx_10_14_x86_64.whl is not a supported wheel on this platform.
-</code></pre></div>    </div>
-  </li>
-  <li>To fix this, I upgraded my MacOS from 10.13 to 10.14 which resolved the issue.</li>
-</ul>
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+</noscript>
 
-<p>Conclusion</p>
-<ul>
-  <li>Building tensorflow from source is a good idea if you do not have GPU on your machine – if you have a GPU version of tensorflow, you need not bother for this marginal performance gain.</li>
-  <li>Having MacOS 10.14.x was necessary for me to complete the process of installing the binary in my virtual environment.</li>
-</ul>
 
-                    ]]>
-                </content:encoded>
-                <guid isPermaLink="false">/2020/05/10/build-tf-from-source-on-mac/</guid>
-                <description>
-                    
-                    If you like to make the best of your computers' hardware for performance gains up to 300%, you need to build tenforflow from source. This post will provide some tips for building tensorflow on MacOS.
-                    
-                </description>
-                <pubDate>Sun, 10 May 2020 18:02:41 -0400</pubDate>
-                <author>Pramod Anantharam</author>
-            </item>
-        
-    
-  </channel>
-</rss>
+
+
+
+
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+    <small>
+      Theme based on <a href="https://github.com/johnotander/pixyll">Pixyll</a>.
+    </small>
+  </div>
+</footer>
+
+<script type="text/javascript">
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/sw.js")
+    }
+</script>
+
+</body>
+</html>
