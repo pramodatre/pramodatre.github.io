@@ -11,7 +11,7 @@ Stereo vision is the term used for the process of inferring 3D depth information
 ## Depth Estimation
 Before we proceed coding, I would like to explain `how can we estimate depth using the disparity map?` Without this motivation, I feel it is pointless to explain disparity map implementation. I had difficulty understanding a specific part of the derivation of depth equation which I will point out later. May be it's just me, but, I thought of writing this up so that it may help others who may have similar question as I did. A simplified stereo setup with two cameras is shown here. It's a bird's eye view of the camera setup and a point $P$ for which we are trying to estimate the depth/distance form the camera. To estimate depth from stereo implies that we need to estimate $Z$ in the figure. $Z$ is the distance of point $P$ from the camera.
 
-{% include image-small.html img="images/2020-05-30/stereo_geometry.png" title="stereo_geometry" caption="Derivation of depth for a simplified stereo setting with two cameras with perfectly aligned centers and having same focal lengths. (source: CS 4495 Computer Vision – A. Bobick)" url="https://www.cc.gatech.edu/~afb/classes/CS4495-Fall2013/slides/CS4495-06-Stereo.pdf" %}
+{% include image-small.html img="images/2020-05-30/stereo_geometry.png" title="stereo_geometry" caption="Figure 1. Derivation of depth for a simplified stereo setting with two cameras with perfectly aligned centers and having same focal lengths. (source: CS 4495 Computer Vision – A. Bobick)" url="https://www.cc.gatech.edu/~afb/classes/CS4495-Fall2013/slides/CS4495-06-Stereo.pdf" %}
 
 In the above setup, let $C_{L}$ be the camera on the left and $C_{R}$ be the camera on the right. Both these cameras have the same focal length $f$. Distance between camera centers is $B$. A line from point $P$ to the camera center of $C_{L}$ intersects the image plane at $p_{l}$. A line from point $P$ to camera center of $C_{R}$ intersects $C_{R}$'s image plane at $p_{r}$. Note that the triangles $p_{l} P p_{r}$ and $C_{L}PC_{R}$ are similar triangles. Since these triangles are similar, their ratio of base to height should be the same, i.e., $\frac{B}{Z}$ = $\frac{p_{l}p_{r}}{Z-f}$. From the figure, we have $p_{l}p_{r}$ to be $B - (x_{l}+x_{r})$. However, in all the derivations in multiple references, $p_{l}p_{r}$ is told to be $B - x_{l} + x_{r}$ which totally confused me. It is quite clear from the figure, to get $p_{l}p_{r}$ we need to subtract ($x_{l} + x_{r}$) from $B$. 
 
@@ -23,10 +23,10 @@ Depth is inversely proportional to disparity, i.e., from the depth estimation eq
 * Output: Disparity map of width $w$ and height $h$
 * Why do we need to specify block size and search block size?
     * For every pixel in the left image, we need to find the corresponding pixel in the right image. Since pixel values may be noisy and is influenced by many factors such as sensor noise, lighting, mis-alignment, etc., we may have to rely on a group of surrounding pixels for comparison. 
-    * ***Block size*** refers to the neighborhood size we select to compare pixels from left image and the right image specified as number of pixels in height and width. An example block is shown as a white box in both left and right images in Figure 1.
-    * ***Search block size*** refers to a rectangle (shown in black on the right image) in which we will search for best matching block. Notice that for the selected block from the left image, to get the corresponding image region, you will have to move the white smaller rectangle to the left in the black rectangle as shown in the third image in Figure 1.
+    * ***Block size*** refers to the neighborhood size we select to compare pixels from left image and the right image specified as number of pixels in height and width. An example block is shown as a white box in both left and right images in Figure 2.
+    * ***Search block size*** refers to a rectangle (shown in black on the right image) in which we will search for best matching block. Notice that for the selected block from the left image, to get the corresponding image region, you will have to move the white smaller rectangle to the left in the black rectangle as shown in the third image in Figure 2.
 
-{% include image.html img="images/2020-05-30/block_matching.png" title="block_matching" caption="Figure 1. Block matching example. (Image source: Middlebury Stereo Datasets)" url="http://vision.middlebury.edu/stereo/data/scenes2003/" %}
+{% include image.html img="images/2020-05-30/block_matching.png" title="block_matching" caption="Figure 2. Block matching example. (Image source: Middlebury Stereo Datasets)" url="http://vision.middlebury.edu/stereo/data/scenes2003/" %}
 
 * For a pixel in the left image, select the pixels in it's neighborhood specified as block size from the left image. 
 * Compute similarity score by comparing each block from the left image (same size as block size) and each block selected from the search block in the right image. Slide block on the right image by one pixel within the search block (black rectangle). Record all the similarity scores.
@@ -57,7 +57,7 @@ def sum_of_abs_diff(pixel_vals_1, pixel_vals_2):
 {% endhighlight %}
 
 ### Block comparisons
-We can compare a block of pixels from the left image with a block of pixels in the right image using the `sum_of_abs_diff` method we just defined. However, note that we need to compare a single block of pixels in the left image to multiple blocks of pixels on the right image (like we defined in `Why do we need to specify block size and search block size?`). These multiple blocks are to be selected within the search block shown as a black rectangle in Figure 1. We will slide the white box one pixel at a time starting from left most position within the black box to get candidate blocks for comparison from the right image. We note the block from the right image that has lowest sum of absolute difference score. The corresponding row and column index (y, x) is returned by our implementation here.
+We can compare a block of pixels from the left image with a block of pixels in the right image using the `sum_of_abs_diff` method we just defined. However, note that we need to compare a single block of pixels in the left image to multiple blocks of pixels on the right image (like we defined in `Why do we need to specify block size and search block size?`). These multiple blocks are to be selected within the search block shown as a black rectangle in Figure 2. We will slide the white box one pixel at a time starting from left most position within the black box to get candidate blocks for comparison from the right image. We note the block from the right image that has lowest sum of absolute difference score. The corresponding row and column index (y, x) is returned by our implementation here.
 
 {% highlight python %}
 BLOCK_SIZE = 7
@@ -131,9 +131,9 @@ for y in tqdm(range(BLOCK_SIZE, h-BLOCK_SIZE)):
             disparity_map[y, x] = abs(min_index[1] - x)
 {% endhighlight %}
 
-Here is a visualization of the disparity map computed for left and right images shown in Figure 1.
+Here is a visualization of the disparity map computed for left and right images shown in Figure 3.
 
-{% include image.html img="images/2020-05-30/disparity_image.png" title="disparity_map" caption="Figure 2. Visualization of disparity values computed using left and right image of the scene shown in the first figure. Hot/lighter color indicates higher value of disparity and cooler/darker color indicates lower value of disparity" %}
+{% include image.html img="images/2020-05-30/disparity_image.png" title="disparity_map" caption="Figure 3. Visualization of disparity values computed using left and right image of the scene shown in the first figure. Hot/lighter color indicates higher value of disparity and cooler/darker color indicates lower value of disparity" %}
 
 We use `tqdm` to show progress and note the time it takes to compute the disparity map in python. 
 {% include image.html img="images/2020-05-30/run_time_python.png" title="run_time_python" caption="Disparity map computation run time" %}
@@ -277,7 +277,7 @@ Execution time: 6 seconds (0.1) mins
 {% endhighlight %}
 
 Here the visualization of the disparity map calculated using the parallel implementation.
-{% include image.html img="images/2020-05-30/disparity_image_cpp.png" title="disparity_image_cpp" caption="Figure 3. Visualization of disparity values computed using parallel implementation in C++. Hot/lighter color indicates higher value of disparity and cooler/darker color indicates lower value of disparity" %}
+{% include image.html img="images/2020-05-30/disparity_image_cpp.png" title="disparity_image_cpp" caption="Figure 4. Visualization of disparity values computed using parallel implementation in C++. Hot/lighter color indicates higher value of disparity and cooler/darker color indicates lower value of disparity" %}
 
 ### Conclusion
 We were able to implement the basic idea of Stereo Vision to compute disparity values. Hope you enjoyed translating Stereo Vision ideas to working code! Without any optimizations, the python implementation is too slow for any practical use. With parallel implementation, we reduced the running time for 375 by 450 pixels image form `2 minutes 37 seconds` to just `6 seconds`. Even though this is a significant jump in performance, it is far from practical use for any real-time systems that rely on stereo to estimate its environment. For example, a robot using vision guided navigation cannot afford to spend 6 seconds for processing two frames (one from left and and another from right camera). A far more optimized computation is necessary especially for real-time consumption of depth information.
