@@ -28,7 +28,7 @@ Depth is inversely proportional to disparity, i.e., from the depth estimation eq
 
 {% include image.html img="images/2020-05-30/block_matching.png" title="block_matching" caption="Figure 2. Block matching example. (Image source: Middlebury Stereo Datasets)" url="http://vision.middlebury.edu/stereo/data/scenes2003/" %}
 
-* For a pixel in the left image, select the pixels in it's neighborhood specified as block size from the left image. 
+* For a pixel in the left image, select the pixels in its neighborhood specified as block size from the left image. 
 * Compute similarity score by comparing each block from the left image (same size as block size) and each block selected from the search block in the right image. Slide block on the right image by one pixel within the search block (black rectangle). Record all the similarity scores.
 * Find the highest pixel similarity score from the previous step. For the block with highest similarity, return the pixel location at the center of the block as the best matching pixel.
 * If $x_{l}$ is the column index of the left pixel, and the highest similarity score was obtained for a block on the right image whose center pixel has column index $x_{r}$, we will note the disparity value of $\left\|x_{l}-x_{r}\right\|$ for the location of left image pixel.
