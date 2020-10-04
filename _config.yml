@@ -58,13 +58,12 @@ steam_nickname:
 google_plus_id:
 linkedin_username: pramodprofile
 angellist_username:
-medium_id: pramod.atre
 bitcoin_url:
 paypal_url:
 flattr_button:
 telegram_username:
 vk_id:
-kaggle: pramodatre
+medium_id: pramod.atre
 
 # Post sharing icons
 show_sharing_icons: false
