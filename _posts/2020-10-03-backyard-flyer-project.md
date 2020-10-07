@@ -35,7 +35,7 @@ source fcnd/bin/activate
 
 Install all dependencies
 ```python
-pip install -r requirements.txt
+pip install git+https://github.com/udacity/udacidrone.git
 ```
 
 ## Hardware
