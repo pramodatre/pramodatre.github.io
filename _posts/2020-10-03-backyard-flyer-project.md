@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Porting Backyard Flyer Project to Crazyflie"
-date:   2020-10-03 06:02:41 -0400
+date:   2020-11-06 18:02:41 -0400
 summary: In this first project of Udacity Flying Car and Autonomous Flight Engineer nanodegree, we will make the drone fly in a predetermined square trajectory.
 use_math: true
 ---
