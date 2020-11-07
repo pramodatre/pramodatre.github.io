@@ -1,11 +1,10 @@
 ---
 layout: post
 title:  "Porting Backyard Flyer Project to Crazyflie"
-date:   2020-11-06 06:02:41 -0400
+date:   2020-11-06 18:02:41 -0400
 summary: In this first project of Udacity Flying Car and Autonomous Flight Engineer nanodegree, we will make the drone fly in a predetermined square trajectory.
 use_math: true
 ---
-
 Udacity Flying Car and Autonomous Flight Engineer (FCND) nanodegree starts out with basics of autonomous flight and provides a broad overview of Unmanned Aerial Vehicles (UAVs) and their history. The first project called the `Backyard Flyer` is designed mostly to understand ways to interact with the simulator though event-driven python code. Event-driven programming deals with asynchronous nature of a drone where the state of the system changes over time and our code should respond to these state changes as they occur. 
 
 [FCND simulator](https://github.com/udacity/FCND-Simulator-Releases/releases) is a valuable tool used to control and fly a drone in a virtual 3D world. Simulations are critical for UAVs/robotics as they provide a no-risk environment to develop and test out algorithms before deploying them on hardware. Once deployed on hardware, we run the risk of damaging the done or even worse risking the safety of people around the hardware.
