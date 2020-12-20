@@ -8,6 +8,7 @@ use_math: true
 
 Motion Planning essentially answers the question `How to get from point A to point B?` given the map of the environment. In this project, the drone had to navigate through an urban environment with tall buildings to reach the destination specified as GPS coordinates. You can checkout the udacity project along with my solution to the project [here](https://github.com/pramodatre/FCND-Motion-Planning). In this blog post, we will port the Udacity project to Crazyflie, a micro-UAV that can safely be used indoors. We use local coordinates indoors derived from the flow deck for lateral position (x and y coordinate) and laser range sensor for height (z coordinate).
 
+
 We assume the map of the environment is given to us -- this is an assumption we make to simplify the problem. In reality, the map of environment may not be available or even if it's available, map may be stale. Some of the obstacles such as furniture, people, or other clutter are not even captured in the map. However, our assumption lets us deal with the problem in a manageable way and learn the basics of motion planning.
 
 # Motion Planning terminology
