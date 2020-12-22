@@ -53,7 +53,7 @@ Once connected, it is recommended to change the connection bandwidth from `250k`
 ### Programming paradigm
 When writing software using Udacidrone, event driven programming paradigm is leveraged for its ability to capture asynchronous operations. For example, if we would like the drone to take action depending on its position, we would first create a [listener to position observations](). When position observations are made the position listener is invoked. The position listener can read the current position and decide on it's action. One such [example in this project]() is we check if current altitude is "close" to the desired altitude. If so, we start navigation to waypoints.
 
-## Slight but must-have project modifications
+## Simulator to Crazyflie
 These instructions were provided as part of the porting instructions in the project. However, for others, who may not have access to the course content, [here is the project](https://github.com/pramodatre/FCND-Backyard-Flyer) that works with the simulator. To port [backyard_flyer.py](https://github.com/pramodatre/FCND-Backyard-Flyer/blob/master/backyard_flyer.py) to Crazyflie, following modifications are to be implemented:
 * [Update connection parameters](https://github.com/pramodatre/FCND-projects-crazyflie-port/blob/master/crazyflie_backyard_flyer.py#L188)
 * Adapt code to work no state callbacks with Crazyfile for [takeoff](https://github.com/pramodatre/FCND-projects-crazyflie-port/blob/master/crazyflie_backyard_flyer.py#L50) and [landing](https://github.com/pramodatre/FCND-projects-crazyflie-port/blob/master/crazyflie_backyard_flyer.py#L72)
