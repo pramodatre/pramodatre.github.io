@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Simultaneous Localization and Mapping (SLAM) with Crazyflie"
-date:   2020-12-21 06:02:41 -0400
+date:   2021-05-07 06:02:41 -0400
 summary: Navigating an unknown world using SLAM which enables UAVs like Crazyflie to perform GPS denied navigation.
 use_math: true
 ---
