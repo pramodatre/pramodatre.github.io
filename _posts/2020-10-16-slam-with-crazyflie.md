@@ -5,10 +5,10 @@ date:   2020-12-21 06:02:41 -0400
 summary: Navigating an unknown world using SLAM which enables UAVs like Crazyflie to perform GPS denied navigation.
 use_math: true
 ---
-Perception, Planning, and Control are some of the high-level tasks to be performed by a successful autonomous agent. The act of perceiving the environment state such as obstacles and their locations is a perception task. Perception is a necessary skill for any autonomous agent. In the previous post on Motion Planning, we hand-coded the map of an obstacle course and used it for planning safe paths for the Crazyflie. However, this approach doesn't scale when the environment gets larger. Let's explore the task of environmental perception to build a realistic map of the environment.
+Perception, Planning, and Control are some of the high-level tasks to be performed by a successful autonomous agent. The act of perceiving the environment state such as obstacles and their locations is a perception task. Perception is a necessary skill for any autonomous agent. In the previous post on Motion Planning, we hand-coded the map of an obstacle course and used it for planning safe paths for the Crazyflie. However, this approach doesn't scale when the environment gets large and dynamic. Let's explore the task of environmental perception to build a realistic map of the environment.
 
 # Sensors
-Crazyflie has flow-deck which consists of sensors to estimate height (z direction) and lateral displacement (x and y direction). A multi-ranger deck is added to the Crazyflie for receiving range observations in five directions (left, right, front, back, and up). These range observations along with flow-deck observations are utilized in this post for mapping the environment.
+Crazyflie has flow-deck which consists of sensors to estimate height (z direction) from the ground and lateral displacement (x and y direction). A multi-ranger deck is added to the Crazyflie for receiving range observations in five directions (`left`, `right`, `front`, `back`, and `up`). These range observations (except for the `up` direction) along with flow-deck observations are utilized in this post for mapping the environment.
 
 ## Estimated position and attitude
 When a UAV is navigating in a space where there is no external support for localization such as GPS or cameras, only way to find the position of the UAV at any time is to estimate its position using onboard sensors and control commands issued to the UAV. Crazyflie does this estimation in it's firmware and we can enjoy the estimated positions for free :) Using the python client API of Crazyflie, we can [subscribe to position, attitude, and range observations](https://github.com/pramodatre/crazyflie-multi-ranger-deck-slam/blob/master/mappingAndNavigation/crazy_explorer.py#L331) using a callback mechanism. Position observations consists of x, y, and z coordinates estimated using optical flow (x and y coordinate) and a laser range finder (z coordinate). Attitude estimates consists of roll, pitch, and yaw of the UAV. We will use these estimates for creating a map of the environment.
@@ -26,40 +26,72 @@ Models the robot environment as fixed sized grids where each grid's occupancy is
 In a cluttered environment, using lines to describe smaller objects and keeping them separate from larger objects may be a challenging task. In other words, continuous representation introduces unnecessary complexity such as guessing polygon shapes of obstacles from range sensor data. A grid based representation addresses this concern using a probabilistic occupancy representation for each cell in the grid.
 
 ## Occupancy grids implementation
-Crazyflie has laser range sensors on the multi-ranger deck. For a laser range sensor, here is an example of reliability measurements [^1]. As you can see that at 2000 millimeters i.e., 2 meters from the sensor, the standard deviation of measurement in around 25 millimeters i.e., 0.025 meters (2.5 cm). Beyond 2 meters from the sensor, the standard deviation gets larger and the data may be unusable for our scenario. Hence, we fix the range of usable laser range observations to less than or equal to 2 meters.
+Crazyflie has five laser range sensors on the multi-ranger deck. For a laser range sensor, here is an example of reliability measurements [^1]. As you can see that at 2000 millimeters i.e., 2 meters from the sensor, the standard deviation of measurement in around 25 millimeters i.e., 0.025 meters (2.5 cm). Beyond 2 meters from the sensor, the standard deviation gets larger and the data may be unusable for our scenario. Hence, we fix the range of usable laser range observations to less than or equal to 2 meters.
 
 {% include image-small.html img="images/2020-10-26/laser_range_senor_data_reliability.png" title="autonomous_crash_failing_optical_flow" caption="Reliability of laser range sensor with change in distance from the sensor" %}
 
 ### Initialization
+We represent the environment with grids of 0.1 meters $\times$ 0.1 meters. We represent each grid's occupancy with a single number which is the probability of the grid being occupied (by an obstacle). In the implementation, we define a 500 $\times$ 500 grid each entry representing occupancy of 0.1 $\times$ 0.1 meters cell. Total size of the occupancy map in meters is (500 cells * 0.1 meters per cell $\times$ 500 cells * 0.1 meters per cell) which is (50 meters $\times$ 50 meters).
 
-### Update
+We assume that each cell is equally likely to be either occupied or not-occupied. This is achieved by assigning a probability of `0.5` for each cell while initializing the 500 $\times$ 500 numpy array.
 
 ### Numerical stability considerations
+When combining probabilities by repeated multiplication, we will probably encounter numerical underflow. One way to mitigate this would be use log-odds representation and update the log-odds as we make new observations of occupancy. If p is the probability of an event occurring then log-odds is defined as $\frac{p}{1 - log(p)}$. 
 
 ### Log-odds vs. raw sensor data
 In a grid representation defined above, each cell represents a physical space. This space can be either occupied or unoccupied in the physical world. We need to use sensor data to estimate the true state of the cell space, when using Crazyflie, laser range sensors are used to estimate cell occupancies.
 
-We have a choice of using raw sensor data as-is for determining cell occupancy. Why do we need probabilities? Here is a comparison of raw sensor data vs. log-odds of occupancy probability used to update an occupancy grid.
+We have a choice of using raw sensor data as-is for determining cell occupancy. Why do we need probabilities? Here is a comparison of raw sensor data vs. log-odds of occupancy probability used to update an occupancy grid. Note the noisy nature of the occupancy grid created using just the raw observations. The log-odds based representation on the right is much more robust to sensor noise.
 
 {% include image.html img="images/2020-10-26/center_obstacle_comparison.png" title="center_obstacle_comparison" caption="Comparing raw sensor data vs. log-odds of occupancy probabilities to update an occupancy grid." %}
 
+### Update
+Updating the log odds value at time t, $l_{t}$ involves an addition $l_{t-1} + log(p / (1 - p))$ where $p$ is the probably of the observed event and $l_{t-1}$ is the previous log odds value. For example, if we are updating the occupancy map, and sensor reports an obstacle, then $p$ is the probability of the obstacle being present at the observed location. At first, this may seem strange and you may wonder is sensor reporting an obstacle is not good enough to say there is an obstacle for sure? Yes, there is an obstacle but we cannot completely discount the fact that sensors are sometimes noisy resulting in some uncertainty in the reported observations. Hence, if the sensor reports an obstacle, then we can be say there is a 90% chance that there is really an obstacle. This choice of 90% is arbitrary and you can essentially plug in any value that quantifies the uncertainty in sensor observations.
+
+## Mapping software architecture
+Crazyflie perceives obstacles in the environment using the on-board laser range sensors on the multi-ranger deck. The configuration explained in the blog post enables Crazyflie to sense obstacles in the front, right, back, and left. The maximum trustable range is set to two meters, i.e., we update the occupancy map only with observations that are within the two meters range for a reliable map of the environment. The overall architecture of the mapping software and hardware is shown below.
+
+{% include image.html img="images/2020-10-26/crazyflie_mapper_architecture.png" title="crazyflie_mapper_architecture" caption="Architecture of the mapping software components which include CrazyflieState, Navigator, and Mapper and interactions with the Crazyflie." %}
+
+Crazyflie radio is the communication link between the flight computer (PC or laptop) and the flight controller (on-board Crazyflie). Flight computer is responsible for higher level perception and planning of Crazyflie behaviors. Flight controller is responsible for lower level control of Crazyflie such as computing thrusts for the four motors to achieve a certain desired motion. 
+
+Observations from on-board sensors of Crazyflie is abstracted as "state" of Crazyflie with `CrazyflieState`. `CrazyflieState` subscribes to sensor updates from Crazyflie sensors and the state is updated as the sensor observations arrive. 
+
+`Mapper` initializes the occupancy map of the environment and utilizes `CrazyflieState` to update the occupancy map. `Mapper` exposes Crazyflie state to the `Navigator`.
+
+
 ## Evaluation
+Let's now utilize the above mapping software and the Crazyflie to map the environment.
 
 ### Obstacle course (controlled environment)
+This is a setting that is staged with some obstacles and is much more controlled compared to real-world environments. This is a good starting point to test our mapping and navigation system.
+
 {% include image.html img="images/2020-10-26/autonomous_nav_obstacle_course.gif" title="mapping_simple_2" caption="Crazyflie navigating an obstacle course using multi-ranger deck containing laser range sensors. Environment is mapped using SLAM where localization is done on Crazyflie (firmware) and mapping done on flight computer connected to the Crazyflie." %}
 
+As you can see, Crazyflie navigates the environment without flying into any of the obstacles in the environment. The updated occupancy map after the complete flight is shown below. The cyan color are the un-explored cells, yellow color indicates obstacle, and dark blue cells indicate free space on the map.
+
 {% include image-small.html img="images/2020-10-26/mapping_simple_2.png" title="mapping_simple_2" caption="Occupancy map created by autonomous navigation of an obstacle course which has less clutter" %}
+
 ### Indoor environment with less clutter
+Our next test flight is in a slightly more realistic environment -- indoor environment inside a house. Crazyflie was able to navigate the space and create an occupancy map as shown below. The long areas are the corridors within the house.
+
 {% include image.html img="images/2020-10-26/mapping_larger_area_1.png" title="mapping_larger_area_1" caption="Occupancy map created by autonomous navigation of an indoor space. The green color indicates uncertainty, dark blue indicates un-occupied cells, and yellow indicates occupied cells" %}
 
-
 ### Indoor environment with clutter (realistic)
+Finally, a more realistic environment with lot of clutter and obstacles that are almost undetectable by laser ranger sensors on Crazyflie. For example, observe the Crazyflie as it gets closer to the chair -- since the obstacle goes undetected, Crazyflie collides with the chair. 
+
 {% include image-small.html img="images/2020-10-26/autonomous_crash_motivation_for_vision.gif" title="autonomous_crash_motivation_for_vision" caption="While navigating a realistic indoor environment with clutter, Crazyflie crashes due to it's inability to perceive objects in the environment" %}
+
+In realistic navigation scenarios, lighting conditions may not be ideal. Crazyflie relies on downward facing camera to estimate lateral motion. If the lighting conditions are not good or the intensity of lighting changes on the floor, Crazyflie may be misguided in knowing its actual lateral position. As you can see below, the Crazyflie transitions from stable lateral positioning to completely unstable lateral positioning resulting in a crash.
 
 {% include image-small.html img="images/2020-10-26/autonomous_crash_failing_optical_flow.gif" title="autonomous_crash_failing_optical_flow" caption="While optical flow is a reliable way of estimating x and y displacements in well lit environment, some failures like this may lead to unpredictable behavior and eventual crash!" %}
 
 ## Conclusion
+Mapping the environment with Crazyflie is a great learning experience. You will understand the basics of Crazyflie control, representation of obstacles in the environment, occupancy map and its updates, and finally navigating the environment when there are obstacles encountered by the Crazyflie.
 
+You will notice that laser range sensors are quite reliable in uncluttered environments. It's quite challenging to spot obstacles without any additional sophistication in spotting tricky obstacles such as chairs. One possible approach to address this limitation is to use senors that can detect even smaller obstacles, e.g., a camera can be used to map the environment and obstacles. This opens exciting opportunities such as object detection and recognition enabling Crazyflie to achieve more sophisticated tasks.
+
+Complete code for Crazyflie mapping and navigation can be found [here](https://github.com/pramodatre/crazyflie-multi-ranger-deck-slam/blob/master/mappingAndNavigation/crazy_explorer.py)
 
 ---
 [^1]: Jose A. Castellanos and Juan D. Tardos. 2000. Mobile Robot Localization and Map Building: A Multisensor Fusion Approach. Kluwer Academic Publishers, USA.
