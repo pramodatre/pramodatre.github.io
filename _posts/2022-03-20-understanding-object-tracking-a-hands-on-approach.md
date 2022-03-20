@@ -432,11 +432,7 @@ Evaluator.evaluate                                                     1.3774 se
 ```
 Observe that there are improvements to tracking throughout! Here is the evaluation summary with percentage improvements shown from the baseline tracker. Biggest gain is in association accuracy which makes sense since the detector based approach is using an optimization approach to assign object continuations between frames minimizing the overall cost of assignments. The baseline approach is doing this assignment without using a greedy approach by selecting the highest overlapping bounding box across frames.
 
-| Metric| Score|
-| **HOTA** | **39.45** ($$ \uparrow $$ 14%)|
-| LocA | 77.514 ($$ \downarrow $$ 0.5%)|
-| DetA | 48.459 ($$ \uparrow $$ 4%)|
-| AssA | 32.238 ($$ \uparrow $$ 26%)|
+{% include image-small.html img="images/2022-03-20/tracking_by_detection.png" title="HOTA metrics for tracking by detection approach." %} 
 
 # Conclusion
 In this post, you were able to understanding basic tracking strategies, setup ground-truth data, select evaluation metrics, and implement BaselineTracker and DetectionBasedTracker in Python. You are able to quantify the improvements you made from baseline tracker to detection based tracker using HOTA metrics. Having such a metric that measure our progress as we refine our approach is crucial for staying focused in our attempt to improve our approach to object tracking. This metric provide direct feedback to us allowing us to measure success of new ideas and thereby iterate quickly to improve our approach. In future posts, I will go though the implementation of more tracking approaches such as matching by pixel similarity and motion models presented in Forsyth et. al. [^2].
