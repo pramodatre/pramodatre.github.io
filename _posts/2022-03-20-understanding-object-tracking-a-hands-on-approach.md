@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Understanding Object Tracking: A Hands-on Approach, Part 1"
-date:   2021-12-10 06:02:41 -0400
+date:   2022-03-20 06:02:41 -0400
 summary: In this post, I will go over object tracking ideas from Forsyth, D., & Ponce, J. (2003). Computer vision A modern approach and implement them in code for deeper understanding.
 use_math: true
 ---
