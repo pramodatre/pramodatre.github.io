@@ -9,6 +9,7 @@ date_format: "%b %-d, %Y"
 header_pages:
  - about.md
  - phdlife.md
+ - products.md
  - contact.html
 
 # Google services
@@ -49,7 +50,7 @@ facebook_comments_number: 10
 
 # Social icons
 github_username: pramodatre
-reddit_username:
+reddit_username: skillbuildertech
 bitbucket_username:
 stackoverflow_id:
 twitter_username: pramodatre
@@ -69,7 +70,7 @@ medium_id: pramod-atre.medium.com
 show_sharing_icons: false
 # Change to 'true' to enable individual icons
 share_facebook: false
-share_twitter: false
+share_twitter: true
 share_googleplus: false
 share_linkedin: false
 share_digg: false
