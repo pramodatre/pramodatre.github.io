@@ -11,7 +11,7 @@ Acquiring skills takes focused effort and deliberate practice. I strongly believ
 
 ## Drone technology: Assembly and autonomous flight
 
-This is eBook written in HTML intentionally to maintain liveliness especially with gifs.
+This is an eBook intentionally written in HTML to maintain liveliness especially with GIFs showing Crazyflie in action.
 
 <script src="https://gumroad.com/js/gumroad-embed.js"></script>
 <div class="gumroad-product-embed"><a href="https://skillbuildertech.gumroad.com/l/rzig">Loading...</a></div>
