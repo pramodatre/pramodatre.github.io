@@ -1,0 +1,19 @@
+project:
+  type: website
+
+website:
+  title: "blog"
+  navbar:
+    right:
+      - about.qmd
+      - icon: github
+        href: https://github.com/pramodatre
+      - icon: twitter
+        href: https://twitter.com/pramodatre
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+
+
+

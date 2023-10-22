@@ -1,0 +1,23 @@
+---
+title: "About"
+image: profile.jpg
+about:
+  template: jolla
+  links:
+    - icon: twitter
+      text: Twitter
+      href: https://twitter.com
+    - icon: linkedin
+      text: LinkedIn
+      href: https://linkedin.com/pramodatre
+    - icon: github
+      text: Github
+      href: https://github.com
+
+---
+
+I'm a Researcher and Engineer working on Machine Learning and Computer Vision related topics. I enjoy working on fun projects in my spare time. I like to bike and hike if I'm not doing any projects.
+
+I have experience developing research projects ground-up in both academia and industry. Here is my older webpage summarizing my [PhD life](https://pramodatre.github.io/old_site/).
+
+Recently, I have started to explore ideas of interactive teaching experiences to teach skills using deliberate practice principles. I strongly believe that meeting a good teacher will be a life changing experience for students. Keeping students motivated to learn is crucial and technology has a great potential to deliver great teaching and learning experiences.
