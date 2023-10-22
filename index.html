@@ -71,9 +71,9 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      valueNames: ['listing-date','listing-title','listing-author',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-title-sort'] }],
       
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
+      searchColumns: ["listing-date","listing-title","listing-author"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
@@ -168,310 +168,114 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="object tracking,tracking by detection,perception" data-listing-date-sort="1647748800000" data-listing-file-modified-sort="1697974891997" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="34">
-<div class="thumbnail">
-<p><a href="./posts/understanding-object-tracking-a-hands-on-approach/index.html"> <p class="card-img-top"><img src="posts/understanding-object-tracking-a-hands-on-approach/pets2009S2L1_gt_bboxes.gif"  class="thumbnail-image card-img"/></p> </a></p>
-</div>
-<div class="body">
-<a href="./posts/understanding-object-tracking-a-hands-on-approach/index.html">
-<h3 class="no-anchor listing-title">
-Understanding Object Tracking: A Hands-on Approach, Part 1
-</h3>
-<div class="listing-subtitle">
+<div class="quarto-listing quarto-listing-container-table" id="listing-listing">
 
-</div>
-</a>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('object tracking'); return false;">
-object tracking
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('tracking by detection'); return false;">
-tracking by detection
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('perception'); return false;">
-perception
-</div>
-</div>
-<a href="./posts/understanding-object-tracking-a-hands-on-approach/index.html">
-<div class="listing-description">
-There are multiple state-of-the-art approaches for object detection <sup>1</sup> <sup>2</sup>. These approaches addresses the perception problem: How do we perceive various objects in the environment? These objects may move or the perceiver may move around relative…
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/understanding-object-tracking-a-hands-on-approach/index.html">
-<div class="listing-date">
-Mar 20, 2022
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="baby monitor,raspberry pi,usb camera,usb microphone" data-listing-date-sort="1613106000000" data-listing-file-modified-sort="1697974892040" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5">
-<div class="thumbnail">
-<p><a href="./posts/usb-camera-and-audio-streaming-pi/index.html"> <p class="card-img-top"><img src="posts/usb-camera-and-audio-streaming-pi/uv4l_main_page.png"  class="thumbnail-image card-img"/></p> </a></p>
-</div>
-<div class="body">
-<a href="./posts/usb-camera-and-audio-streaming-pi/index.html">
-<h3 class="no-anchor listing-title">
-Live Streaming Video + Audio on Raspberry Pi using USB Camera and Microphone
-</h3>
-<div class="listing-subtitle">
+<table class="quarto-listing-table table">
+<thead>
+<tr>
+<th>
+Date
+</th>
+<th>
+Title
+</th>
+<th>
+Author
+</th>
+</tr>
+</thead>
+<tbody class="list">
+<tr data-index="0" data-categories="object tracking,tracking by detection,perception" data-listing-date-sort="1647734400000" data-listing-file-modified-sort="1698004393193" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="34" data-listing-title-sort="Understanding Object Tracking: A Hands-on Approach, Part 1" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-date">Mar 20, 2022</span>
+</td>
+<td>
+<a href="./posts/understanding-object-tracking-a-hands-on-approach/index.html" class="title listing-title">Understanding Object Tracking: A Hands-on Approach, Part 1</a>
+</td>
+<td>
+<span class="listing-author"></span>
+</td>
+</tr>
+<tr data-index="1" data-categories="baby monitor,raspberry pi,usb camera,usb microphone" data-listing-date-sort="1613088000000" data-listing-file-modified-sort="1698004393233" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-title-sort="Live Streaming Video + Audio on Raspberry Pi using USB Camera and Microphone" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-date">Feb 12, 2021</span>
+</td>
+<td>
+<a href="./posts/usb-camera-and-audio-streaming-pi/index.html" class="title listing-title">Live Streaming Video + Audio on Raspberry Pi using USB Camera and Microphone</a>
+</td>
+<td>
+<span class="listing-author"></span>
+</td>
+</tr>
+<tr data-index="2" data-categories="SLAM,UAV,autonomous navigation,Crazyflie,perception" data-listing-date-sort="1608508800000" data-listing-file-modified-sort="1698004393149" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="10" data-listing-title-sort="Simultaneous Localization and Mapping (SLAM) with Crazyflie" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-date">Dec 21, 2020</span>
+</td>
+<td>
+<a href="./posts/slam-with-crazyflie/index.html" class="title listing-title">Simultaneous Localization and Mapping (SLAM) with Crazyflie</a>
+</td>
+<td>
+<span class="listing-author"></span>
+</td>
+</tr>
+<tr data-index="3" data-categories="UAV,motion planning,Crazyflie" data-listing-date-sort="1608422400000" data-listing-file-modified-sort="1698004392941" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-title-sort="Porting Motion Planning Project to Crazyflie" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-date">Dec 20, 2020</span>
+</td>
+<td>
+<a href="./posts/motion-planning-project/index.html" class="title listing-title">Porting Motion Planning Project to Crazyflie</a>
+</td>
+<td>
+<span class="listing-author"></span>
+</td>
+</tr>
+<tr data-index="4" data-categories="UAV,guided navigation" data-listing-date-sort="1604620800000" data-listing-file-modified-sort="1698004392837" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-title-sort="Porting Backyard Flyer Project to Crazyflie" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-date">Nov 6, 2020</span>
+</td>
+<td>
+<a href="./posts/backyard-flyer-project/index.html" class="title listing-title">Porting Backyard Flyer Project to Crazyflie</a>
+</td>
+<td>
+<span class="listing-author"></span>
+</td>
+</tr>
+<tr data-index="5" data-categories="UAV,crazyflie assembly,crazyflie" data-listing-date-sort="1601596800000" data-listing-file-modified-sort="1698004392853" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-title-sort="Crazyflie2.1 Micro-UAV Assembly Experience" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-date">Oct 2, 2020</span>
+</td>
+<td>
+<a href="./posts/crazyflie-micro-uav/index.html" class="title listing-title">Crazyflie2.1 Micro-UAV Assembly Experience</a>
+</td>
+<td>
+<span class="listing-author"></span>
+</td>
+</tr>
+<tr data-index="6" data-categories="depth estimation,stereo vision from images" data-listing-date-sort="1589673600000" data-listing-file-modified-sort="1698004393193" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="22" data-listing-title-sort="Disparity Map Computation in Python and C++" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-date">May 17, 2020</span>
+</td>
+<td>
+<a href="./posts/sterio-vision-exploration/index.html" class="title listing-title">Disparity Map Computation in Python and C++</a>
+</td>
+<td>
+<span class="listing-author"></span>
+</td>
+</tr>
+<tr data-index="7" data-categories="tensorflow" data-listing-date-sort="1589068800000" data-listing-file-modified-sort="1698004392837" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-title-sort="Building Tensorflow from Source on MacOS" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-date">May 10, 2020</span>
+</td>
+<td>
+<a href="./posts/build-tf-from-source-on-mac/index.html" class="title listing-title">Building Tensorflow from Source on MacOS</a>
+</td>
+<td>
+<span class="listing-author"></span>
+</td>
+</tr>
+</tbody>
 
-</div>
-</a>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('baby monitor'); return false;">
-baby monitor
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('raspberry pi'); return false;">
-raspberry pi
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('usb camera'); return false;">
-usb camera
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('usb microphone'); return false;">
-usb microphone
-</div>
-</div>
-<a href="./posts/usb-camera-and-audio-streaming-pi/index.html">
-<div class="listing-description">
-There may be many applications such as…
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/usb-camera-and-audio-streaming-pi/index.html">
-<div class="listing-date">
-Feb 12, 2021
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-categories="SLAM,UAV,autonomous navigation,Crazyflie,perception" data-listing-date-sort="1608526800000" data-listing-file-modified-sort="1697974891942" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="10">
-<div class="thumbnail">
-<p><a href="./posts/slam-with-crazyflie/index.html"> <img src="./posts/slam-with-crazyflie/crazyflie_mapper_architecture.png" class="thumbnail-image"> </a></p>
-</div>
-<div class="body">
-<a href="./posts/slam-with-crazyflie/index.html">
-<h3 class="no-anchor listing-title">
-Simultaneous Localization and Mapping (SLAM) with Crazyflie
-</h3>
-<div class="listing-subtitle">
-
-</div>
-</a>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('SLAM'); return false;">
-SLAM
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('UAV'); return false;">
-UAV
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('autonomous navigation'); return false;">
-autonomous navigation
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('Crazyflie'); return false;">
-Crazyflie
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('perception'); return false;">
-perception
-</div>
-</div>
-<a href="./posts/slam-with-crazyflie/index.html">
-<div class="listing-description">
-Perception, Planning, and Control are some of the high-level tasks to be performed by a successful autonomous agent. The act of perceiving the environment state such as…
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/slam-with-crazyflie/index.html">
-<div class="listing-date">
-Dec 21, 2020
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-categories="UAV,motion planning,Crazyflie" data-listing-date-sort="1608440400000" data-listing-file-modified-sort="1697974891670" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8">
-<div class="thumbnail">
-<p><a href="./posts/motion-planning-project/index.html"> <p class="card-img-top"><img src="posts/motion-planning-project/prm_path.png"  class="thumbnail-image card-img"/></p> </a></p>
-</div>
-<div class="body">
-<a href="./posts/motion-planning-project/index.html">
-<h3 class="no-anchor listing-title">
-Porting Motion Planning Project to Crazyflie
-</h3>
-<div class="listing-subtitle">
-
-</div>
-</a>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('UAV'); return false;">
-UAV
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('motion planning'); return false;">
-motion planning
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('Crazyflie'); return false;">
-Crazyflie
-</div>
-</div>
-<a href="./posts/motion-planning-project/index.html">
-<div class="listing-description">
-Motion Planning essentially answers the question <code>How to get from point A to point B?</code> given the map of the environment. In this project on Udacity, the drone had to navigate through an urban environment with tall buildings to reach the destination specified…
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/motion-planning-project/index.html">
-<div class="listing-date">
-Dec 20, 2020
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="4" data-categories="UAV,guided navigation" data-listing-date-sort="1604638800000" data-listing-file-modified-sort="1697975824783" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4">
-<div class="thumbnail">
-<p><a href="./posts/backyard-flyer-project/index.html"> <p class="card-img-top"><img src="posts/backyard-flyer-project/backyard_flyer_solution.gif"  class="thumbnail-image card-img"/></p> </a></p>
-</div>
-<div class="body">
-<a href="./posts/backyard-flyer-project/index.html">
-<h3 class="no-anchor listing-title">
-Porting Backyard Flyer Project to Crazyflie
-</h3>
-<div class="listing-subtitle">
-
-</div>
-</a>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('UAV'); return false;">
-UAV
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('guided navigation'); return false;">
-guided navigation
-</div>
-</div>
-<a href="./posts/backyard-flyer-project/index.html">
-<div class="listing-description">
-Udacity Flying Car and Autonomous Flight…<code></code>
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/backyard-flyer-project/index.html">
-<div class="listing-date">
-Nov 6, 2020
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="5" data-categories="UAV,crazyflie assembly,crazyflie" data-listing-date-sort="1601611200000" data-listing-file-modified-sort="1697974891566" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5">
-<div class="thumbnail">
-<p><a href="./posts/crazyflie-micro-uav/index.html"> <p class="card-img-top"><img src="posts/crazyflie-micro-uav/crazyflie_order.jpg"  class="thumbnail-image card-img"/></p> </a></p>
-</div>
-<div class="body">
-<a href="./posts/crazyflie-micro-uav/index.html">
-<h3 class="no-anchor listing-title">
-Crazyflie2.1 Micro-UAV Assembly Experience
-</h3>
-<div class="listing-subtitle">
-
-</div>
-</a>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('UAV'); return false;">
-UAV
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('crazyflie assembly'); return false;">
-crazyflie assembly
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('crazyflie'); return false;">
-crazyflie
-</div>
-</div>
-<a href="./posts/crazyflie-micro-uav/index.html">
-<div class="listing-description">
-I’m in the process of wrapping up my <code>Flying Car and Autonomous Flight Engineer</code> Udacity nanodegree and thought of sharing my experience in porting some of the projects to a real drone a.k.a. UAV (Unmanned Aerial Vehicle). However, before porting any…<code></code><code></code>
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/crazyflie-micro-uav/index.html">
-<div class="listing-date">
-Oct 2, 2020
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="6" data-categories="depth estimation,stereo vision from images" data-listing-date-sort="1589688000000" data-listing-file-modified-sort="1697974891995" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="22">
-<div class="thumbnail">
-<p><a href="./posts/sterio-vision-exploration/index.html"> <p class="card-img-top"><img src="posts/sterio-vision-exploration/stereo_geometry.png"  class="thumbnail-image card-img"/></p> </a></p>
-</div>
-<div class="body">
-<a href="./posts/sterio-vision-exploration/index.html">
-<h3 class="no-anchor listing-title">
-Disparity Map Computation in Python and C++
-</h3>
-<div class="listing-subtitle">
-
-</div>
-</a>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('depth estimation'); return false;">
-depth estimation
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('stereo vision from images'); return false;">
-stereo vision from images
-</div>
-</div>
-<a href="./posts/sterio-vision-exploration/index.html">
-<div class="listing-description">
-Stereo vision is the term used for the process of inferring 3D depth information from 2D images <sup>1</sup>. 2D images may be from a Stereo Rig, usually consisting of two…<sup></sup><sup></sup><sup></sup><sup></sup><sup></sup>
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/sterio-vision-exploration/index.html">
-<div class="listing-date">
-May 17, 2020
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="7" data-categories="tensorflow" data-listing-date-sort="1589083200000" data-listing-file-modified-sort="1697974891537" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3">
-<div class="thumbnail">
-<p><a href="./posts/build-tf-from-source-on-mac/index.html"> <div class="listing-item-img-placeholder card-img-top" >&nbsp;</div> </a></p>
-</div>
-<div class="body">
-<a href="./posts/build-tf-from-source-on-mac/index.html">
-<h3 class="no-anchor listing-title">
-Building Tensorflow from Source on MacOS
-</h3>
-<div class="listing-subtitle">
-
-</div>
-</a>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('tensorflow'); return false;">
-tensorflow
-</div>
-</div>
-<a href="./posts/build-tf-from-source-on-mac/index.html">
-<div class="listing-description">
-Tensorflow is a popular choice if you are working on Computer Vision projects such as image classification, object…
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/build-tf-from-source-on-mac/index.html">
-<div class="listing-date">
-May 10, 2020
-</div>
-</a>
-</div>
-</div>
-</div>
+</table>
 <div class="listing-no-matching d-none">
 No matching items
 </div>

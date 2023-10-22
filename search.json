@@ -1,66 +1,10 @@
 [
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Hello! I’m Pramod 👋 weclome to my blog!",
     "section": "",
-    "text": "I’m a Researcher and Engineer working on Machine Learning and Computer Vision related topics. I enjoy working on fun projects in my spare time. I like to bike and hike if I’m not doing any projects.\nI have experience developing research projects ground-up in both academia and industry. Here is my older webpage summarizing my PhD life.\nRecently, I have started to explore ideas of interactive teaching experiences to teach skills using deliberate practice principles. I strongly believe that meeting a good teacher will be a life changing experience for students. Keeping students motivated to learn is crucial and technology has a great potential to deliver great teaching and learning experiences."
-  },
-  {
-    "objectID": "posts/backyard-flyer-project/index.html",
-    "href": "posts/backyard-flyer-project/index.html",
-    "title": "Porting Backyard Flyer Project to Crazyflie",
-    "section": "",
-    "text": "Udacity Flying Car and Autonomous Flight Engineer (FCND) nanodegree starts out with basics of autonomous flight and provides a broad overview of Unmanned Aerial Vehicles (UAVs) and their history. The first project called the Backyard Flyer is designed mostly to understand ways to interact with the simulator though event-driven python code. Event-driven programming deals with asynchronous nature of a drone where the state of the system changes over time and our code should respond to these state changes as they occur.\nFCND simulator is a valuable tool used to control and fly a drone in a virtual 3D world. Simulations are critical for UAVs/robotics as they provide a no-risk environment to develop and test out algorithms before deploying them on hardware. Once deployed on hardware, we run the risk of damaging the done or even worse risking the safety of people around the hardware.\nFor a complete description of the project and the solution, you can refer to the code here. Here is the outcome of the drone flying a predetermined square path on the simulator.\nIn this post, I will focus on porting this project to work with Crazyflie. Udacidrone API abstraction used to develop this project to work with the simulator supports Crazyflie as one of the platforms. Udacidrone API provides a protocol agnostic API to control a drone in the FCND simulator or other supported hardware such as PX4 powered drone or Crazyflie. So, any code written to work with the simulator should also work for Crazyflie."
-  },
-  {
-    "objectID": "posts/backyard-flyer-project/index.html#udacidrone-and-associated-tools",
-    "href": "posts/backyard-flyer-project/index.html#udacidrone-and-associated-tools",
-    "title": "Porting Backyard Flyer Project to Crazyflie",
-    "section": "Udacidrone and associated tools",
-    "text": "Udacidrone and associated tools\nFor a detailed description of Udacidrone, you can refer to their getting started guide. Here, I will emphasize on essential steps to get basic setup working for communication with Crazyflie."
-  },
-  {
-    "objectID": "posts/backyard-flyer-project/index.html#software",
-    "href": "posts/backyard-flyer-project/index.html#software",
-    "title": "Porting Backyard Flyer Project to Crazyflie",
-    "section": "Software",
-    "text": "Software\nClone the repository\ngit clone https://github.com/pramodatre/FCND-projects-crazyflie-port.git\nCreate a virtual environment and activate\nThis project is tested to work with python 3.6.8 and I recommend using pyenv to manage your python versions if you are using MacOS.\npython3 -m venv fcnd\nsource fcnd/bin/activate\nInstall all dependencies\npip install git+https://github.com/udacity/udacidrone.git"
-  },
-  {
-    "objectID": "posts/backyard-flyer-project/index.html#hardware",
-    "href": "posts/backyard-flyer-project/index.html#hardware",
-    "title": "Porting Backyard Flyer Project to Crazyflie",
-    "section": "Hardware",
-    "text": "Hardware\nIt’s assumed that you have followed instructions on setting up Crazyflie2.1. Ensure you have Crazyflie2.1 PA radio plugged-in and the Crazyflie2.1 is turned ON."
-  },
-  {
-    "objectID": "posts/backyard-flyer-project/index.html#configuration",
-    "href": "posts/backyard-flyer-project/index.html#configuration",
-    "title": "Porting Backyard Flyer Project to Crazyflie",
-    "section": "Configuration",
-    "text": "Configuration\nLaunch cfclient (while the virtual environment is activated). You will see the cfclient UI where you can search and connect to your Crazyflie.\n\n\n\nConnect to Crazyflie using cfclient UI\n\n\nOnce connected, it is recommended to change the connection bandwidth from 250k to 2M.\n\n\n\nChange bandwidth of Crazyflie connection to recommended 2M\n\n\n\nChange bandwidth of Crazyflie connection to recommended 2M\n\n\nProgramming paradigm\nWhen writing software using Udacidrone, event driven programming paradigm is leveraged for its ability to capture asynchronous operations. For example, if we would like the drone to take action depending on its position, we would first create a listener to position observations. When position observations are made the position listener is invoked. The position listener can read the current position and decide on its action. One such example in this project is we check if current altitude is “close” to the desired altitude. If so, we start navigation to waypoints."
-  },
-  {
-    "objectID": "posts/backyard-flyer-project/index.html#simulator-to-crazyflie",
-    "href": "posts/backyard-flyer-project/index.html#simulator-to-crazyflie",
-    "title": "Porting Backyard Flyer Project to Crazyflie",
-    "section": "Simulator to Crazyflie",
-    "text": "Simulator to Crazyflie\nThese instructions were provided as part of the porting instructions in the project. However, for others, who may not have access to the course content, here is the project that works with the simulator. To port backyard_flyer.py to Crazyflie, following modifications are to be implemented:\n\nUpdate connection parameters\nAdapt code to work no state callbacks with Crazyfile for takeoff and landing\nUpdate waypoints that is safe indoor space by reducing the box size\nUpdate takeoff altitude to something that works indoor\nUpdate waypoint acceptance thresholds to match new box size\n\nLaunch crazyflie_backyard_flyer.py script with the PA radio plugged in to your laptop and Crazyflie switched ON to see it fly a rectangular trajectory.\n&gt; python crazyflie_backyard_flyer.py\nLogs/TLog.txt\nCreating log file\nLogs/NavLog.txt\nstarting connection\nConnecting to radio://0/80/2M\nConnected to radio://0/80/2M\nWaiting for estimator to find position...\nClosing log file\ntakeoff transition\nfilter has converge, position is good!\nwaypoint transition\nwaypoint to navigate to: [0.75 0.   0.5 ]\n0.75 0.0 0.5\nthe delay time for the move command: 2.7578634101417574\nvel vector: (0.19966524161618923, -0.01156681850591479, 0)\nwaypoint transition\nwaypoint to navigate to: [0.75 0.75 0.5 ]\n0.75 0.75 0.5\nthe delay time for the move command: 4.019526425683314\nvel vector: (0.03779849779012415, -0.19639570658446173, 0)\nwaypoint transition\nwaypoint to navigate to: [0.   0.75 0.5 ]\n0.0 0.75 0.5\nthe delay time for the move command: 4.781339464967377\nvel vector: (-0.19740196558339365, -0.032131977589508295, 0)\nwaypoint transition\nwaypoint to navigate to: [0.  0.  0.5]\n0.0 0.0 0.5\nthe delay time for the move command: 4.743249739164866\nvel vector: (-0.03620927863315014, 0.19669491132428135, 0)\nwaypoint transition\nlanding transition\nmanual transition"
-  },
-  {
-    "objectID": "posts/backyard-flyer-project/index.html#crazyflie-in-action",
-    "href": "posts/backyard-flyer-project/index.html#crazyflie-in-action",
-    "title": "Porting Backyard Flyer Project to Crazyflie",
-    "section": "Crazyflie in action",
-    "text": "Crazyflie in action\n\n\n\nCrazyflie flying a square trajectory of side 0.75 meters"
-  },
-  {
-    "objectID": "posts/backyard-flyer-project/index.html#conclusion",
-    "href": "posts/backyard-flyer-project/index.html#conclusion",
-    "title": "Porting Backyard Flyer Project to Crazyflie",
-    "section": "Conclusion",
-    "text": "Conclusion\nUdacidrone API allows us to write software once and deploy to work with multiple target environments such as FCND simulator, Crazyflie, or any PX4 drone. The tooling is quite mature and thanks to the documentation of Udacidrone API, the project instructions, and Crazyflie setup documentation – you can start making your ideas fly relatively quickly."
+    "text": "Date\n\n\nTitle\n\n\nAuthor\n\n\n\n\n\n\nMar 20, 2022\n\n\nUnderstanding Object Tracking: A Hands-on Approach, Part 1\n\n\n\n\n\n\n\nFeb 12, 2021\n\n\nLive Streaming Video + Audio on Raspberry Pi using USB Camera and Microphone\n\n\n\n\n\n\n\nDec 21, 2020\n\n\nSimultaneous Localization and Mapping (SLAM) with Crazyflie\n\n\n\n\n\n\n\nDec 20, 2020\n\n\nPorting Motion Planning Project to Crazyflie\n\n\n\n\n\n\n\nNov 6, 2020\n\n\nPorting Backyard Flyer Project to Crazyflie\n\n\n\n\n\n\n\nOct 2, 2020\n\n\nCrazyflie2.1 Micro-UAV Assembly Experience\n\n\n\n\n\n\n\nMay 17, 2020\n\n\nDisparity Map Computation in Python and C++\n\n\n\n\n\n\n\nMay 10, 2020\n\n\nBuilding Tensorflow from Source on MacOS\n\n\n\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/understanding-object-tracking-a-hands-on-approach/index.html",
@@ -110,104 +54,6 @@
     "title": "Understanding Object Tracking: A Hands-on Approach, Part 1",
     "section": "Footnotes",
     "text": "Footnotes\n\n\nObject Detection Papers with Code↩︎\nObject Detection and Tracking in 2020↩︎\nForsyth, D., & Ponce, J. (2003). Computer vision: A modern approach. Upper Saddle River, N.J: Prentice Hall.↩︎\nRedmon, J., & Farhadi, A. (2018). YOLOv3: An Incremental Improvement. ArXiv, abs/1804.02767.↩︎\nYOLO: Real-Time Object Detection↩︎\nForsyth, D., & Ponce, J. (2003). Computer vision: A modern approach. Upper Saddle River, N.J: Prentice Hall.↩︎\nObject Detection and Tracking in 2020↩︎\nYin, Fei & Makris, Dimitrios & Velastin, Sergio. (2007). Performance evaluation of object tracking algorithms. 10th IEEE International Workshop on Performance Evaluation of Tracking and Surveillance (PETS2007).↩︎\nLuiten, J., Os̆ep, A., Dendorfer, P. et al. HOTA: A Higher Order Metric for Evaluating Multi-object Tracking. Int J Comput Vis 129, 548–578 (2021). https://doi.org/10.1007/s11263-020-01375-2↩︎\nMultiple object Tracking Benchmark↩︎\nJonathon Luiten, Arne Hoffhues, TrackEval↩︎\nJonathon Luiten, A.O. & Leibe, B. HOTA: A Higher Order Metric for Evaluating Multi-Object Tracking. International Journal of Computer Vision, 2020.↩︎\nHow to evaluate tracking with the HOTA metrics↩︎\nHow to evaluate tracking with the HOTA metrics↩︎\nHow to evaluate tracking with the HOTA metrics↩︎\nJonathon Luiten, A.O. & Leibe, B. HOTA: A Higher Order Metric for Evaluating Multi-Object Tracking. International Journal of Computer Vision, 2020.↩︎\nMOT Challenge Metrics Implementation↩︎\nHOTA Metric Implementation in Python↩︎\nTracking Evaluation on Your Own Data↩︎\nMOT Challenge Metrics Implementation↩︎\nTracking Evaluation on Your Own Data↩︎\nForsyth, D., & Ponce, J. (2003). Computer vision: A modern approach. Upper Saddle River, N.J: Prentice Hall.↩︎\nHow to evaluate tracking with the HOTA metrics↩︎\nJonathon Luiten, A.O. & Leibe, B. HOTA: A Higher Order Metric for Evaluating Multi-Object Tracking. International Journal of Computer Vision, 2020.↩︎\nRedmon, J., & Farhadi, A. (2018). YOLOv3: An Incremental Improvement. ArXiv, abs/1804.02767.↩︎\nRedmon, J., & Farhadi, A. (2018). YOLOv3: An Incremental Improvement. ArXiv, abs/1804.02767.↩︎\nForsyth, D., & Ponce, J. (2003). Computer vision: A modern approach. Upper Saddle River, N.J: Prentice Hall.↩︎"
-  },
-  {
-    "objectID": "posts/motion-planning-project/index.html",
-    "href": "posts/motion-planning-project/index.html",
-    "title": "Porting Motion Planning Project to Crazyflie",
-    "section": "",
-    "text": "Motion Planning essentially answers the question How to get from point A to point B? given the map of the environment. In this project on Udacity, the drone had to navigate through an urban environment with tall buildings to reach the destination specified as GPS coordinates. You can checkout the Udacity project along with my solution to the project here. In this blog post, we will port the Udacity project to Crazyflie, a micro-UAV that can be safely used indoors. We use local coordinates indoors derived from the flow deck for lateral position (x and y coordinate) and laser range sensor for drone altitude (z coordinate).\nWe assume that the map of the environment is given to us – this is an assumption to simplify the problem and focus on understanding motion planning ideas. In reality, the map of environment may not be available or even if it’s available, it may not be precise. Some of the obstacles such as furniture, people, or other clutter in the indoor space may not be captured in the map. However, our assumption lets us deal with the problem in a manageable way and learn the basics of motion planning."
-  },
-  {
-    "objectID": "posts/motion-planning-project/index.html#representation",
-    "href": "posts/motion-planning-project/index.html#representation",
-    "title": "Porting Motion Planning Project to Crazyflie",
-    "section": "Representation",
-    "text": "Representation\nWe need to represent the surroundings of the UAV in such a way that lets us store and perform queries related to the obstacles in the environment. Further, we need to represent the waypoints of the UAV from the start to the goal location. For a grid representation, waypoints may be a sequence of cells from start to goal location in a discrete space. A graph representation would have nodes representing waypoints with coordinates of each node in a continuous space.\n\nGrids\nWe can split the environment into grids and build an occupancy map representing various obstacles in the environment. Grids work well when the UAV is confined to a smaller space such as indoor environment but doesn’t scale well if we need to model a large area such as city. In a grid representation, each cell in the grid is either occupied or not occupied by an obstacle. We can find paths from point A to point B by traversing the cells that are not occupied from the starting point to the destination point. In the Udacity motion planning project, we start with a grid representation and later extend the solution to a graph representation for scalability (solution has to scale for navigation over multiple city blocks). When performing motion planning for Crazyflie indoors, a grid based representation should work fine.\n\n\nGraphs\nGraph representations are much more compact than grid representation where each node is a possible waypoint for the UAV. Each node is chosen such that there are no obstacles at the location of the node and along the line segments that connect these nodes. In the Udacity project, an occupancy map of the city is used to sample nodes and edges, and checked for collision with obstacles. You can imaging this kind of look-up, i.e., finding if a node is in free space and line segments connecting these nodes doesn’t cross any obstacles is quite compute intensive since there may be thousands of obstacles to process. You need to store the lateral span of an obstacle such as a building and it’s height and quickly able to answer the question if a node represented by coordinates \\((x_{1}, y_{1}, z_{1})\\) is away from obstacles (some buffer is introduced for accommodating the UAV size and additional safety measure, e.g., 5 meters). This project exemplifies the role of k-d trees in a real-world context, a data structure that is very much suitable for representation and query of points/lines and their intersection with obstacles.\nThere may be too many waypoints regardless of your representation (grid or graph), i.e., for a UAV too many waypoints means too many stop and starts and this results in a jerky motion. Instead, we need smooth flying of the UAV – this is possible if we can create a high-level “summary” of the too many waypoints we have. We use Bresenham algorithm to condense waypoints to minimal points enabling UAV to fly without unnecessary stopping at extraneous waypoints.\nProbabilistic Road Map (PRM) scales well for large spaces compared to approaches such as Voronoi graphs or grid based approaches. However, with the FCND simulator, I had difficulty using PRM so ended up using Voronoi graphs and Bresenham for refinements of paths to come up with the final flight paths for the UAV. When we port this code to Crazyflie, we will use PRM instead of Voronoi graphs as it’s a more practical and scalable approach."
-  },
-  {
-    "objectID": "posts/motion-planning-project/index.html#search",
-    "href": "posts/motion-planning-project/index.html#search",
-    "title": "Porting Motion Planning Project to Crazyflie",
-    "section": "Search",
-    "text": "Search\nThere may be multiple paths an UAV can choose to go from point A to point B. Planning is posed as a search problem over Grids or a Graph. A popular approach to search paths is \\(A^{*}\\) search which takes initial position, the goal position, possible actions at each step, and a heuristic function as inputs, and returns the optimal path which can be used by the drone for its navigation."
-  },
-  {
-    "objectID": "posts/motion-planning-project/index.html#footnotes",
-    "href": "posts/motion-planning-project/index.html#footnotes",
-    "title": "Porting Motion Planning Project to Crazyflie",
-    "section": "Footnotes",
-    "text": "Footnotes\n\n\nChoset, H, Lynch, KM, Hutchinson, S, Kantor, G, Burgard, W, Kavraki, L & Thrun, S 2005, Principles of Robot Motion: Theory, Algorithms, and Implementations. MIT Press.↩︎\nPython sample codes for robotics algorithms↩︎\nThe Open Motion Planning Library↩︎"
-  },
-  {
-    "objectID": "posts/crazyflie-micro-uav/index.html",
-    "href": "posts/crazyflie-micro-uav/index.html",
-    "title": "Crazyflie2.1 Micro-UAV Assembly Experience",
-    "section": "",
-    "text": "I’m in the process of wrapping up my Flying Car and Autonomous Flight Engineer Udacity nanodegree and thought of sharing my experience in porting some of the projects to a real drone a.k.a. UAV (Unmanned Aerial Vehicle). However, before porting any code to a UAV, I had to buy an UAV. Deciding on a specific UAV to buy was a hard decision to make since there are so many options. Someone like me starting out in this space of UAVs would have many questions. Among them, two major questions I had were: Should I build my own UAV? OR Should I buy a ready-to-fly UAV?\nAfter some searching around, I realized that one should answer the question Do you plan to use the UAV indoors or outdoors? to make any buying decision. If your answer is indoors, a micro-UAV is a good option for safety and ease of maneuverability. Since I had no intention of flying the UAV outdoors, I preferred a micro-UAV. If your answer is outdoors, you can still get a micro-UAV but prefer a sturdy one so that it can withstand the cross-winds without crashing! There are great blogs such as How to Build FPV Drone outlining various choices and the building process.\nI chose Crazyflie since:"
-  },
-  {
-    "objectID": "posts/crazyflie-micro-uav/index.html#getting-crazyflie",
-    "href": "posts/crazyflie-micro-uav/index.html#getting-crazyflie",
-    "title": "Crazyflie2.1 Micro-UAV Assembly Experience",
-    "section": "Getting Crazyflie",
-    "text": "Getting Crazyflie\nOnce I decided on the vehicle, I ordered Crazyflie2.1 from their website. I was excited and tracking it all the way from its home in Sweden to its new home here in Pittsburgh, United States. Crazyflie2.1 finally arrived!\n\n\n\nCrazyflie2.1 received from Crazyflie manufacturing location in Sweden"
-  },
-  {
-    "objectID": "posts/crazyflie-micro-uav/index.html#assembly",
-    "href": "posts/crazyflie-micro-uav/index.html#assembly",
-    "title": "Crazyflie2.1 Micro-UAV Assembly Experience",
-    "section": "Assembly",
-    "text": "Assembly\nTo understand the rationale for the suggested assembly, please refer the Hot-swap battery arrangement section. We need an assembly that minimizes hardware stress when we want to replace the battery. This implies that we don’t want to pull out the multi-ranger deck every time we want to replace the battery.\nThere are already great instructions on assembly and making first flight on Crazyflie website here. Here, I will highlight the differences for the hot-swap friendly assembly.\nHere is the crazyflie base after partial assembly. You need to pay attention to the propeller naming and the direction of propeller rotation while performing this assembly (already described well here).\n\n\n\nCrazyflie2.1 after adding the arms, motors, and propellers\n\n\n\nAdding the flow-deck\nFlow deck allows the crazyflie to approximate it’s position along the horizontal direction (x and y direction) using a camera that faces down to the floor. This gives a “sense” of lateral position awareness to Crazyflie. Further, the flow-deck has an additional sensor to measure height giving Crazyflie a “sense” of height from the ground (z direction). With flow-deck added, Crazyflie now can approximate it’s 3D position when flying allowing it to be commanded to new position in 3D coordinates.\n\n\n\nCrazyflie2.1 flow-deck added facing down to the floor\n\n\n\n\nAdding the multi-ranger deck\nMulti-ranger deck is fitted on top of the Crazyflie but all the way down the pin unlike what is shown on Crazyflie website. That is, we place the battery on top of multi-ranger deck instead of under multi-ranger deck. One caveat is that Crazyflie cannot sense range in the upward direction – this should be fine till you stay away from the ceiling of your indoor space.\n\n\n\nCrazyflie2.1 multi-ranger deck added on top and pushed all the way down\n\n\nA rubber strap securely holds the battery as shown enabling us to hot-swap the battery without messing with the multi-ranger deck. I had to learn this the hard way – initially I had to remove the multi-ranger deck every time I had to replace the battery which was very time-consuming. This arrangement really helped me for making continuous flights by hot-swapping the battery with ease.\n\n\n\nCrazyflie2.1 with flow-deck, multi-ranger deck, and battery setup suitable for hot-swap – it’s ready to fly"
-  },
-  {
-    "objectID": "posts/crazyflie-micro-uav/index.html#hot-swap-battery-arrangement",
-    "href": "posts/crazyflie-micro-uav/index.html#hot-swap-battery-arrangement",
-    "title": "Crazyflie2.1 Micro-UAV Assembly Experience",
-    "section": "Hot-swap battery arrangement",
-    "text": "Hot-swap battery arrangement\nBattery supplied with Crazyflie2.1 is a 250 mAh battery with a flying time of around 7 minutes. This is good enough for indoor flights but if you like to skip waiting 40 minutes to charge the battery, one option is to hot-swap the battery (in other words, just replace the battery). I wanted to assemble the Crazyflie such that I can do this hot-swap with minimum effort. Specifically, I did not want to mess with the ranger deck every time I wanted to change the battery since in the standard configuration, the battery is firmly held in place by the ranger deck."
-  },
-  {
-    "objectID": "posts/crazyflie-micro-uav/index.html#conclusion",
-    "href": "posts/crazyflie-micro-uav/index.html#conclusion",
-    "title": "Crazyflie2.1 Micro-UAV Assembly Experience",
-    "section": "Conclusion",
-    "text": "Conclusion\nI have been using the above assembly of Crazyflie2.1 for over four months now. I’m quite impressed by the hardware and firmware of Crazyflie2.1 – especially, their python library is very well documented with examples. I have been able to port some of the projects from my nanodegree to work on Crazyflie. In the future posts, I will provide more details on porting motion planning and drone controls project to Crazyflie."
-  },
-  {
-    "objectID": "posts/usb-camera-and-audio-streaming-pi/index.html",
-    "href": "posts/usb-camera-and-audio-streaming-pi/index.html",
-    "title": "Live Streaming Video + Audio on Raspberry Pi using USB Camera and Microphone",
-    "section": "",
-    "text": "There may be many applications such as wildlife monitoring, baby monitoring, or in general security system applications where you may need to monitor both video and audio stream. One such example of using audio is the Rainforest Connection Species Audio Detection challenge on Kaggle. I wanted to use Raspberry Pi to accomplish video + audio streaming using USB camera and a USB microphone. I have this special requirement since I did not want to buy a Pi Camera as I already have a good quality USB camera and just wanted to use this. Most of the references I was able to find used Raspberry Pi Camera and it was quite confusing for me to navigate this space.\nAfter a bit of struggle to find the relevant information I needed, I got both audio and video streaming working with Raspberry Pi + USB camera + USB microphone. This post is to summarize my findings so that it may be helpful for someone with similar requirements.\nThere may be many approaches but the most straightforward one for me was to use UV4L streaming server, specifically, the two-way audio/video intercom recorder, WebRTC. However, for my purpose, I only need one way stream from USB camera and microphone connected to the Raspberry Pi. WebRTC provides a web UI you can use to start or end the stream from the server."
-  },
-  {
-    "objectID": "posts/usb-camera-and-audio-streaming-pi/index.html#step-1-install-uv4l",
-    "href": "posts/usb-camera-and-audio-streaming-pi/index.html#step-1-install-uv4l",
-    "title": "Live Streaming Video + Audio on Raspberry Pi using USB Camera and Microphone",
-    "section": "Step 1: Install UV4L",
-    "text": "Step 1: Install UV4L\n\nFollow the instructions here. For completeness, I will outline the steps I followed here.\nSince I have Raspbian Buster on my Pi, I used the following command\n\ncurl https://www.linux-projects.org/listing/uv4l_repo/lpkey.asc | sudo apt-key add -\n\nI add this line to the file /etc/apt/sources.list\n\ndeb https://www.linux-projects.org/listing/uv4l_repo/raspbian/stretch stretch main\n\nNext run the install commands\n\n$ sudo apt-get update\n$ sudo apt-get install uv4l uv4l-raspicam\nI stopped here as I just wanted to setup a video + audio stream for a monitoring application and did not really need the uv4l-raspicam-ai modules."
-  },
-  {
-    "objectID": "posts/usb-camera-and-audio-streaming-pi/index.html#step-2-configure-usb-camera",
-    "href": "posts/usb-camera-and-audio-streaming-pi/index.html#step-2-configure-usb-camera",
-    "title": "Live Streaming Video + Audio on Raspberry Pi using USB Camera and Microphone",
-    "section": "Step 2: Configure USB camera",
-    "text": "Step 2: Configure USB camera\n\nFollow the instructions on configuring UV4L or WebRTC using a USB camera here. Here are the steps I followed.\nInstalled the following packages\n\nsudo apt-get install uv4l uv4l-server uv4l-uvc uv4l-server uv4l-webrtc uv4l-xmpp-bridge\n\nUsed the dmesg command to find the USB camera device id\n\n$ dmesg\nAn excerpt from the output here:\n[    7.824796] mc: Linux media interface: v0.10\n[    7.889277] videodev: Linux video capture interface: v2.00\n[    8.072950] uvcvideo: Found UVC 1.00 device H264 USB Camera (05a3:9422)\n[    8.168458] input: H264 USB Camera: USB Camera as /devices/platform/soc/3f980000.usb/usb1/1-1/1-1.5/1-1.5:1.0/input/input8\n[    8.169582] usbcore: registered new interface driver uvcvideo\n[    8.169736] USB Video Class driver (1.1.1)\n\nRan this command to add the hex device ID on line three in the above output.\n\n$ uv4l --syslog-host localhost --driver uvc --device-id 05a3:9422\n\nI got this output indicating that the camera was indeed detected successfully.\n\n&lt;notice&gt; [core] Trying to loading driver 'uvc' from built-in drivers...\n&lt;notice&gt; [core] Loading driver 'uvc' from external plug-in's...\n&lt;notice&gt; [driver] Video functionality 'USB Camera' recognized at 05a3:9422\n&lt;notice&gt; [core] Device detected!\n&lt;notice&gt; [core] Registering device node /dev/uv4l\n\nChanged driver to uvc in /etc/uv4l/uv4l-raspicam.conf\n\ndriver = uvc\n\nReboot the Raspberry Pi using\n\n$ sudo reboot\nOnce the Pi is up, check the following url (note the port is not 8080! It’s http://pi_ip_address:8090/) on the client where you want to receive the stream – in my case, this is my laptop. I used chrome as my browser. You should see a page like this.\n\n\n\nMain page of the UV4L streaming server\n\n\nClick on the WebRTC (first icon) on the page and you end up with a page where you can connect to the stream on the client.\n\n\n\nWebRTC page of the UV4L streaming server\n\n\nYou will see a button called Call (in green) in the bottom left part of the page. Just click it and you should start receiving the video stream like this. \n\nI have pointed the camera to the Pi since I wanted to check the delay in frames over my WiFi using the periodic blinking light on the LAN cable. The delay I noticed in video is acceptable for my purpose. As of now, you would notice that the audio is still not streaming."
-  },
-  {
-    "objectID": "posts/usb-camera-and-audio-streaming-pi/index.html#step-3-configure-usb-microphone",
-    "href": "posts/usb-camera-and-audio-streaming-pi/index.html#step-3-configure-usb-microphone",
-    "title": "Live Streaming Video + Audio on Raspberry Pi using USB Camera and Microphone",
-    "section": "Step 3: Configure USB microphone",
-    "text": "Step 3: Configure USB microphone\n\nFollow these instructions partially to find your USB microphone and include it in the WebRTC server configuration. Here are steps I followed.\nI executed the following command\n\n$ arecord -L | grep CARD\ndefault:CARD=Camera\nsysdefault:CARD=Camera\nfront:CARD=Camera,DEV=0\nsurround21:CARD=Camera,DEV=0\nsurround40:CARD=Camera,DEV=0\nsurround41:CARD=Camera,DEV=0\nsurround50:CARD=Camera,DEV=0\nsurround51:CARD=Camera,DEV=0\nsurround71:CARD=Camera,DEV=0\niec958:CARD=Camera,DEV=0\ndmix:CARD=Camera,DEV=0\ndsnoop:CARD=Camera,DEV=0\nhw:CARD=Camera,DEV=0\nplughw:CARD=Camera,DEV=0\ndefault:CARD=Microphones\nsysdefault:CARD=Microphones\nfront:CARD=Microphones,DEV=0\nsurround21:CARD=Microphones,DEV=0\nsurround40:CARD=Microphones,DEV=0\nsurround41:CARD=Microphones,DEV=0\nsurround50:CARD=Microphones,DEV=0\nsurround51:CARD=Microphones,DEV=0\nsurround71:CARD=Microphones,DEV=0\niec958:CARD=Microphones,DEV=0\ndmix:CARD=Microphones,DEV=0\ndsnoop:CARD=Microphones,DEV=0\nhw:CARD=Microphones,DEV=0\nplughw:CARD=Microphones,DEV=0\n\nA bit tricky, you have to literally count the lines starting from zero to your microphone device in the last line plughw:CARD=Microphones,DEV=0.\nplughw:CARD=Microphones,DEV=0 is line 27 starting from zero for the first line.\nIn the file /etc/uv4l/uv4l-raspicam.conf, find the line that has the audio device index and set the index to the line number of you microphone. In my case, it’s 27.\n\nserver-option = --webrtc-recdevice-index=27\nReboot the Raspberry Pi and you should be able to access the Video + Audio stream from Raspberry Pi on your WiFi at http:pi_ip_address:8090/stream/webrtc"
-  },
-  {
-    "objectID": "posts/usb-camera-and-audio-streaming-pi/index.html#conclusion",
-    "href": "posts/usb-camera-and-audio-streaming-pi/index.html#conclusion",
-    "title": "Live Streaming Video + Audio on Raspberry Pi using USB Camera and Microphone",
-    "section": "Conclusion",
-    "text": "Conclusion\nThe setup of USB camera + USB microphone is something I had and wanted to utilize it without making additional purchases such as Pi Camera. This was a special requirement for me – there may be much simpler tools if you have a Pi Camera with you. This setup looks very reliable with millisecond level latency. Also, the service has been running for over a day as of my writing of this article."
   },
   {
     "objectID": "posts/slam-with-crazyflie/index.html",
@@ -280,6 +126,97 @@
     "text": "Footnotes\n\n\nJose A. Castellanos and Juan D. Tardos. 2000. Mobile Robot Localization and Map Building: A Multisensor Fusion Approach. Kluwer Academic Publishers, USA.↩︎"
   },
   {
+    "objectID": "posts/backyard-flyer-project/index.html",
+    "href": "posts/backyard-flyer-project/index.html",
+    "title": "Porting Backyard Flyer Project to Crazyflie",
+    "section": "",
+    "text": "Udacity Flying Car and Autonomous Flight Engineer (FCND) nanodegree starts out with basics of autonomous flight and provides a broad overview of Unmanned Aerial Vehicles (UAVs) and their history. The first project called the Backyard Flyer is designed mostly to understand ways to interact with the simulator though event-driven python code. Event-driven programming deals with asynchronous nature of a drone where the state of the system changes over time and our code should respond to these state changes as they occur.\nFCND simulator is a valuable tool used to control and fly a drone in a virtual 3D world. Simulations are critical for UAVs/robotics as they provide a no-risk environment to develop and test out algorithms before deploying them on hardware. Once deployed on hardware, we run the risk of damaging the done or even worse risking the safety of people around the hardware.\nFor a complete description of the project and the solution, you can refer to the code here. Here is the outcome of the drone flying a predetermined square path on the simulator.\nIn this post, I will focus on porting this project to work with Crazyflie. Udacidrone API abstraction used to develop this project to work with the simulator supports Crazyflie as one of the platforms. Udacidrone API provides a protocol agnostic API to control a drone in the FCND simulator or other supported hardware such as PX4 powered drone or Crazyflie. So, any code written to work with the simulator should also work for Crazyflie."
+  },
+  {
+    "objectID": "posts/backyard-flyer-project/index.html#udacidrone-and-associated-tools",
+    "href": "posts/backyard-flyer-project/index.html#udacidrone-and-associated-tools",
+    "title": "Porting Backyard Flyer Project to Crazyflie",
+    "section": "Udacidrone and associated tools",
+    "text": "Udacidrone and associated tools\nFor a detailed description of Udacidrone, you can refer to their getting started guide. Here, I will emphasize on essential steps to get basic setup working for communication with Crazyflie."
+  },
+  {
+    "objectID": "posts/backyard-flyer-project/index.html#software",
+    "href": "posts/backyard-flyer-project/index.html#software",
+    "title": "Porting Backyard Flyer Project to Crazyflie",
+    "section": "Software",
+    "text": "Software\nClone the repository\ngit clone https://github.com/pramodatre/FCND-projects-crazyflie-port.git\nCreate a virtual environment and activate\nThis project is tested to work with python 3.6.8 and I recommend using pyenv to manage your python versions if you are using MacOS.\npython3 -m venv fcnd\nsource fcnd/bin/activate\nInstall all dependencies\npip install git+https://github.com/udacity/udacidrone.git"
+  },
+  {
+    "objectID": "posts/backyard-flyer-project/index.html#hardware",
+    "href": "posts/backyard-flyer-project/index.html#hardware",
+    "title": "Porting Backyard Flyer Project to Crazyflie",
+    "section": "Hardware",
+    "text": "Hardware\nIt’s assumed that you have followed instructions on setting up Crazyflie2.1. Ensure you have Crazyflie2.1 PA radio plugged-in and the Crazyflie2.1 is turned ON."
+  },
+  {
+    "objectID": "posts/backyard-flyer-project/index.html#configuration",
+    "href": "posts/backyard-flyer-project/index.html#configuration",
+    "title": "Porting Backyard Flyer Project to Crazyflie",
+    "section": "Configuration",
+    "text": "Configuration\nLaunch cfclient (while the virtual environment is activated). You will see the cfclient UI where you can search and connect to your Crazyflie.\n\n\n\nConnect to Crazyflie using cfclient UI\n\n\nOnce connected, it is recommended to change the connection bandwidth from 250k to 2M.\n\n\n\nChange bandwidth of Crazyflie connection to recommended 2M\n\n\n\nChange bandwidth of Crazyflie connection to recommended 2M\n\n\nProgramming paradigm\nWhen writing software using Udacidrone, event driven programming paradigm is leveraged for its ability to capture asynchronous operations. For example, if we would like the drone to take action depending on its position, we would first create a listener to position observations. When position observations are made the position listener is invoked. The position listener can read the current position and decide on its action. One such example in this project is we check if current altitude is “close” to the desired altitude. If so, we start navigation to waypoints."
+  },
+  {
+    "objectID": "posts/backyard-flyer-project/index.html#simulator-to-crazyflie",
+    "href": "posts/backyard-flyer-project/index.html#simulator-to-crazyflie",
+    "title": "Porting Backyard Flyer Project to Crazyflie",
+    "section": "Simulator to Crazyflie",
+    "text": "Simulator to Crazyflie\nThese instructions were provided as part of the porting instructions in the project. However, for others, who may not have access to the course content, here is the project that works with the simulator. To port backyard_flyer.py to Crazyflie, following modifications are to be implemented:\n\nUpdate connection parameters\nAdapt code to work no state callbacks with Crazyfile for takeoff and landing\nUpdate waypoints that is safe indoor space by reducing the box size\nUpdate takeoff altitude to something that works indoor\nUpdate waypoint acceptance thresholds to match new box size\n\nLaunch crazyflie_backyard_flyer.py script with the PA radio plugged in to your laptop and Crazyflie switched ON to see it fly a rectangular trajectory.\n&gt; python crazyflie_backyard_flyer.py\nLogs/TLog.txt\nCreating log file\nLogs/NavLog.txt\nstarting connection\nConnecting to radio://0/80/2M\nConnected to radio://0/80/2M\nWaiting for estimator to find position...\nClosing log file\ntakeoff transition\nfilter has converge, position is good!\nwaypoint transition\nwaypoint to navigate to: [0.75 0.   0.5 ]\n0.75 0.0 0.5\nthe delay time for the move command: 2.7578634101417574\nvel vector: (0.19966524161618923, -0.01156681850591479, 0)\nwaypoint transition\nwaypoint to navigate to: [0.75 0.75 0.5 ]\n0.75 0.75 0.5\nthe delay time for the move command: 4.019526425683314\nvel vector: (0.03779849779012415, -0.19639570658446173, 0)\nwaypoint transition\nwaypoint to navigate to: [0.   0.75 0.5 ]\n0.0 0.75 0.5\nthe delay time for the move command: 4.781339464967377\nvel vector: (-0.19740196558339365, -0.032131977589508295, 0)\nwaypoint transition\nwaypoint to navigate to: [0.  0.  0.5]\n0.0 0.0 0.5\nthe delay time for the move command: 4.743249739164866\nvel vector: (-0.03620927863315014, 0.19669491132428135, 0)\nwaypoint transition\nlanding transition\nmanual transition"
+  },
+  {
+    "objectID": "posts/backyard-flyer-project/index.html#crazyflie-in-action",
+    "href": "posts/backyard-flyer-project/index.html#crazyflie-in-action",
+    "title": "Porting Backyard Flyer Project to Crazyflie",
+    "section": "Crazyflie in action",
+    "text": "Crazyflie in action\n\n\n\nCrazyflie flying a square trajectory of side 0.75 meters"
+  },
+  {
+    "objectID": "posts/backyard-flyer-project/index.html#conclusion",
+    "href": "posts/backyard-flyer-project/index.html#conclusion",
+    "title": "Porting Backyard Flyer Project to Crazyflie",
+    "section": "Conclusion",
+    "text": "Conclusion\nUdacidrone API allows us to write software once and deploy to work with multiple target environments such as FCND simulator, Crazyflie, or any PX4 drone. The tooling is quite mature and thanks to the documentation of Udacidrone API, the project instructions, and Crazyflie setup documentation – you can start making your ideas fly relatively quickly."
+  },
+  {
+    "objectID": "posts/build-tf-from-source-on-mac/index.html",
+    "href": "posts/build-tf-from-source-on-mac/index.html",
+    "title": "Building Tensorflow from Source on MacOS",
+    "section": "",
+    "text": "Tensorflow is a popular choice if you are working on Computer Vision projects such as image classification, object detection, pose estimation, or just any Machine Learning task. I have a MacBook Pro and while using tensorflow, I noticed a warning when importing tensorflow which stated the following.\n2020-05-08 19:57:50.106998: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA\n2020-05-08 19:57:50.128346: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x7febdd364b60 initialized for platform Host (this does not guarantee that XLA will be used). Devices:\n2020-05-08 19:57:50.128370: I tensorflow/compiler/xla/service/service.cc:176] StreamExecutor device (0): Host, Default Version\nThis warning is issued because the tensorflow binary installed using pip install tensorflow was not built specifically for my machine. Since the binary should work on a wide varity of devices, the tensorflow binary on pip repository would be built such that it works on majority of the CPUs. Using this generic binary prevents tensorflow from using hardware specific optimizations. These optimizations lead to gain in performance which is especially important when using CPU-only version tensorflow. Since I use CPU-only configuration for tensorflow on my MacBook Pro (I do not have NVIDIA GPUs), this performance gain (up to 300% as mentioned here) is very much welcome!\nIf you observe the warning closely, you see TensorFlow binary was not compiled to use: AVX2 FMA. AVX (Advanced Vector Extensions) are instruction set extensions and specifically, FMA (Fused Multiply Accumulate) introduced by AVX speeds up linear algebra computation. For more information, you can read the stackoverflow post here.\nMotivated by 300% gain I could get, I started following instructions for building tensorflow from source using instructions from official tensorflow website and stackoverflow post.\nBefore you build the code, if your MacOS version is &lt; 10.14, I would recommend to upgrade it to 10.14 before you proceed. I lost lot of time since I initially started with 10.13 MacOS version and Python 3.7 version and finally could not install the *.whl file using the pip command (this is the last step which will be outlined later). Note that building tensorflow from source is time consuming and memory intensive.\nI followed these instructions to build tensorflow from source: https://www.tensorflow.org/install/source\nSome issues and resolutions that worked for me: * I had to explicit select Xcode using sudo xcode-select -s /Applications/Xcode.app/Contents/Developer otherwise, I got compile errors when running bazel build //tensorflow/tools/pip_package:build_pip_package * Having issues as I’m unable to install using pip install /tmp/tensorflow_pkg/tensorflow-version-tags.whl. I’m getting the following error\n(tf-build) Pramods-MacBook-Pro:tensorflow pramodanantharam$ pip install /tmp/tensorflow_pkg/tensorflow-2.2.0-cp37-cp37m-macosx_10_14_x86_64.whl\nERROR: tensorflow-2.2.0-cp37-cp37m-macosx_10_14_x86_64.whl is not a supported wheel on this platform.\n\nTo fix this, I upgraded my MacOS from 10.13 to 10.14 which resolved the issue.\n\n\nConclusion\n\nBuilding tensorflow from source is a good idea if you do not have GPU on your machine – if you have a GPU version of tensorflow, you need not bother for this marginal performance gain.\nHaving MacOS 10.14.x was necessary for me to complete the process of installing"
+  },
+  {
+    "objectID": "posts/motion-planning-project/index.html",
+    "href": "posts/motion-planning-project/index.html",
+    "title": "Porting Motion Planning Project to Crazyflie",
+    "section": "",
+    "text": "Motion Planning essentially answers the question How to get from point A to point B? given the map of the environment. In this project on Udacity, the drone had to navigate through an urban environment with tall buildings to reach the destination specified as GPS coordinates. You can checkout the Udacity project along with my solution to the project here. In this blog post, we will port the Udacity project to Crazyflie, a micro-UAV that can be safely used indoors. We use local coordinates indoors derived from the flow deck for lateral position (x and y coordinate) and laser range sensor for drone altitude (z coordinate).\nWe assume that the map of the environment is given to us – this is an assumption to simplify the problem and focus on understanding motion planning ideas. In reality, the map of environment may not be available or even if it’s available, it may not be precise. Some of the obstacles such as furniture, people, or other clutter in the indoor space may not be captured in the map. However, our assumption lets us deal with the problem in a manageable way and learn the basics of motion planning."
+  },
+  {
+    "objectID": "posts/motion-planning-project/index.html#representation",
+    "href": "posts/motion-planning-project/index.html#representation",
+    "title": "Porting Motion Planning Project to Crazyflie",
+    "section": "Representation",
+    "text": "Representation\nWe need to represent the surroundings of the UAV in such a way that lets us store and perform queries related to the obstacles in the environment. Further, we need to represent the waypoints of the UAV from the start to the goal location. For a grid representation, waypoints may be a sequence of cells from start to goal location in a discrete space. A graph representation would have nodes representing waypoints with coordinates of each node in a continuous space.\n\nGrids\nWe can split the environment into grids and build an occupancy map representing various obstacles in the environment. Grids work well when the UAV is confined to a smaller space such as indoor environment but doesn’t scale well if we need to model a large area such as city. In a grid representation, each cell in the grid is either occupied or not occupied by an obstacle. We can find paths from point A to point B by traversing the cells that are not occupied from the starting point to the destination point. In the Udacity motion planning project, we start with a grid representation and later extend the solution to a graph representation for scalability (solution has to scale for navigation over multiple city blocks). When performing motion planning for Crazyflie indoors, a grid based representation should work fine.\n\n\nGraphs\nGraph representations are much more compact than grid representation where each node is a possible waypoint for the UAV. Each node is chosen such that there are no obstacles at the location of the node and along the line segments that connect these nodes. In the Udacity project, an occupancy map of the city is used to sample nodes and edges, and checked for collision with obstacles. You can imaging this kind of look-up, i.e., finding if a node is in free space and line segments connecting these nodes doesn’t cross any obstacles is quite compute intensive since there may be thousands of obstacles to process. You need to store the lateral span of an obstacle such as a building and it’s height and quickly able to answer the question if a node represented by coordinates \\((x_{1}, y_{1}, z_{1})\\) is away from obstacles (some buffer is introduced for accommodating the UAV size and additional safety measure, e.g., 5 meters). This project exemplifies the role of k-d trees in a real-world context, a data structure that is very much suitable for representation and query of points/lines and their intersection with obstacles.\nThere may be too many waypoints regardless of your representation (grid or graph), i.e., for a UAV too many waypoints means too many stop and starts and this results in a jerky motion. Instead, we need smooth flying of the UAV – this is possible if we can create a high-level “summary” of the too many waypoints we have. We use Bresenham algorithm to condense waypoints to minimal points enabling UAV to fly without unnecessary stopping at extraneous waypoints.\nProbabilistic Road Map (PRM) scales well for large spaces compared to approaches such as Voronoi graphs or grid based approaches. However, with the FCND simulator, I had difficulty using PRM so ended up using Voronoi graphs and Bresenham for refinements of paths to come up with the final flight paths for the UAV. When we port this code to Crazyflie, we will use PRM instead of Voronoi graphs as it’s a more practical and scalable approach."
+  },
+  {
+    "objectID": "posts/motion-planning-project/index.html#search",
+    "href": "posts/motion-planning-project/index.html#search",
+    "title": "Porting Motion Planning Project to Crazyflie",
+    "section": "Search",
+    "text": "Search\nThere may be multiple paths an UAV can choose to go from point A to point B. Planning is posed as a search problem over Grids or a Graph. A popular approach to search paths is \\(A^{*}\\) search which takes initial position, the goal position, possible actions at each step, and a heuristic function as inputs, and returns the optimal path which can be used by the drone for its navigation."
+  },
+  {
+    "objectID": "posts/motion-planning-project/index.html#footnotes",
+    "href": "posts/motion-planning-project/index.html#footnotes",
+    "title": "Porting Motion Planning Project to Crazyflie",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nChoset, H, Lynch, KM, Hutchinson, S, Kantor, G, Burgard, W, Kavraki, L & Thrun, S 2005, Principles of Robot Motion: Theory, Algorithms, and Implementations. MIT Press.↩︎\nPython sample codes for robotics algorithms↩︎\nThe Open Motion Planning Library↩︎"
+  },
+  {
     "objectID": "posts/sterio-vision-exploration/index.html",
     "href": "posts/sterio-vision-exploration/index.html",
     "title": "Disparity Map Computation in Python and C++",
@@ -322,17 +259,80 @@
     "text": "Footnotes\n\n\nForsyth, D., & Ponce, J. (2003). Computer vision: A modern approach. Upper Saddle River, N.J: Prentice Hall.↩︎\nForsyth, D., & Ponce, J. (2003). Computer vision: A modern approach. Upper Saddle River, N.J: Prentice Hall.↩︎\nhttp://mccormickml.com/2014/01/10/stereo-vision-tutorial-part-i/↩︎\nhttp://mccormickml.com/assets/StereoVision/Stereo%20Vision%20-%20Mathworks%20Example%20Article.pdf↩︎\nhttp://vision.deis.unibo.it/~smatt/Seminars/StereoVision.pdf↩︎\nhttps://www.cc.gatech.edu/~afb/classes/CS4495-Fall2013/slides/CS4495-06-Stereo.pdf↩︎\nhttp://mccormickml.com/2014/01/10/stereo-vision-tutorial-part-i/↩︎\nhttp://mccormickml.com/2014/01/10/stereo-vision-tutorial-part-i/↩︎\nhttp://mccormickml.com/assets/StereoVision/Stereo%20Vision%20-%20Mathworks%20Example%20Article.pdf↩︎"
   },
   {
-    "objectID": "posts/build-tf-from-source-on-mac/index.html",
-    "href": "posts/build-tf-from-source-on-mac/index.html",
-    "title": "Building Tensorflow from Source on MacOS",
+    "objectID": "posts/usb-camera-and-audio-streaming-pi/index.html",
+    "href": "posts/usb-camera-and-audio-streaming-pi/index.html",
+    "title": "Live Streaming Video + Audio on Raspberry Pi using USB Camera and Microphone",
     "section": "",
-    "text": "Tensorflow is a popular choice if you are working on Computer Vision projects such as image classification, object detection, pose estimation, or just any Machine Learning task. I have a MacBook Pro and while using tensorflow, I noticed a warning when importing tensorflow which stated the following.\n2020-05-08 19:57:50.106998: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA\n2020-05-08 19:57:50.128346: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x7febdd364b60 initialized for platform Host (this does not guarantee that XLA will be used). Devices:\n2020-05-08 19:57:50.128370: I tensorflow/compiler/xla/service/service.cc:176] StreamExecutor device (0): Host, Default Version\nThis warning is issued because the tensorflow binary installed using pip install tensorflow was not built specifically for my machine. Since the binary should work on a wide varity of devices, the tensorflow binary on pip repository would be built such that it works on majority of the CPUs. Using this generic binary prevents tensorflow from using hardware specific optimizations. These optimizations lead to gain in performance which is especially important when using CPU-only version tensorflow. Since I use CPU-only configuration for tensorflow on my MacBook Pro (I do not have NVIDIA GPUs), this performance gain (up to 300% as mentioned here) is very much welcome!\nIf you observe the warning closely, you see TensorFlow binary was not compiled to use: AVX2 FMA. AVX (Advanced Vector Extensions) are instruction set extensions and specifically, FMA (Fused Multiply Accumulate) introduced by AVX speeds up linear algebra computation. For more information, you can read the stackoverflow post here.\nMotivated by 300% gain I could get, I started following instructions for building tensorflow from source using instructions from official tensorflow website and stackoverflow post.\nBefore you build the code, if your MacOS version is &lt; 10.14, I would recommend to upgrade it to 10.14 before you proceed. I lost lot of time since I initially started with 10.13 MacOS version and Python 3.7 version and finally could not install the *.whl file using the pip command (this is the last step which will be outlined later). Note that building tensorflow from source is time consuming and memory intensive.\nI followed these instructions to build tensorflow from source: https://www.tensorflow.org/install/source\nSome issues and resolutions that worked for me: * I had to explicit select Xcode using sudo xcode-select -s /Applications/Xcode.app/Contents/Developer otherwise, I got compile errors when running bazel build //tensorflow/tools/pip_package:build_pip_package * Having issues as I’m unable to install using pip install /tmp/tensorflow_pkg/tensorflow-version-tags.whl. I’m getting the following error\n(tf-build) Pramods-MacBook-Pro:tensorflow pramodanantharam$ pip install /tmp/tensorflow_pkg/tensorflow-2.2.0-cp37-cp37m-macosx_10_14_x86_64.whl\nERROR: tensorflow-2.2.0-cp37-cp37m-macosx_10_14_x86_64.whl is not a supported wheel on this platform.\n\nTo fix this, I upgraded my MacOS from 10.13 to 10.14 which resolved the issue.\n\n\nConclusion\n\nBuilding tensorflow from source is a good idea if you do not have GPU on your machine – if you have a GPU version of tensorflow, you need not bother for this marginal performance gain.\nHaving MacOS 10.14.x was necessary for me to complete the process of installing"
+    "text": "There may be many applications such as wildlife monitoring, baby monitoring, or in general security system applications where you may need to monitor both video and audio stream. One such example of using audio is the Rainforest Connection Species Audio Detection challenge on Kaggle. I wanted to use Raspberry Pi to accomplish video + audio streaming using USB camera and a USB microphone. I have this special requirement since I did not want to buy a Pi Camera as I already have a good quality USB camera and just wanted to use this. Most of the references I was able to find used Raspberry Pi Camera and it was quite confusing for me to navigate this space.\nAfter a bit of struggle to find the relevant information I needed, I got both audio and video streaming working with Raspberry Pi + USB camera + USB microphone. This post is to summarize my findings so that it may be helpful for someone with similar requirements.\nThere may be many approaches but the most straightforward one for me was to use UV4L streaming server, specifically, the two-way audio/video intercom recorder, WebRTC. However, for my purpose, I only need one way stream from USB camera and microphone connected to the Raspberry Pi. WebRTC provides a web UI you can use to start or end the stream from the server."
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Hello! I’m Pramod 👋 weclome to my blog!",
+    "objectID": "posts/usb-camera-and-audio-streaming-pi/index.html#step-1-install-uv4l",
+    "href": "posts/usb-camera-and-audio-streaming-pi/index.html#step-1-install-uv4l",
+    "title": "Live Streaming Video + Audio on Raspberry Pi using USB Camera and Microphone",
+    "section": "Step 1: Install UV4L",
+    "text": "Step 1: Install UV4L\n\nFollow the instructions here. For completeness, I will outline the steps I followed here.\nSince I have Raspbian Buster on my Pi, I used the following command\n\ncurl https://www.linux-projects.org/listing/uv4l_repo/lpkey.asc | sudo apt-key add -\n\nI add this line to the file /etc/apt/sources.list\n\ndeb https://www.linux-projects.org/listing/uv4l_repo/raspbian/stretch stretch main\n\nNext run the install commands\n\n$ sudo apt-get update\n$ sudo apt-get install uv4l uv4l-raspicam\nI stopped here as I just wanted to setup a video + audio stream for a monitoring application and did not really need the uv4l-raspicam-ai modules."
+  },
+  {
+    "objectID": "posts/usb-camera-and-audio-streaming-pi/index.html#step-2-configure-usb-camera",
+    "href": "posts/usb-camera-and-audio-streaming-pi/index.html#step-2-configure-usb-camera",
+    "title": "Live Streaming Video + Audio on Raspberry Pi using USB Camera and Microphone",
+    "section": "Step 2: Configure USB camera",
+    "text": "Step 2: Configure USB camera\n\nFollow the instructions on configuring UV4L or WebRTC using a USB camera here. Here are the steps I followed.\nInstalled the following packages\n\nsudo apt-get install uv4l uv4l-server uv4l-uvc uv4l-server uv4l-webrtc uv4l-xmpp-bridge\n\nUsed the dmesg command to find the USB camera device id\n\n$ dmesg\nAn excerpt from the output here:\n[    7.824796] mc: Linux media interface: v0.10\n[    7.889277] videodev: Linux video capture interface: v2.00\n[    8.072950] uvcvideo: Found UVC 1.00 device H264 USB Camera (05a3:9422)\n[    8.168458] input: H264 USB Camera: USB Camera as /devices/platform/soc/3f980000.usb/usb1/1-1/1-1.5/1-1.5:1.0/input/input8\n[    8.169582] usbcore: registered new interface driver uvcvideo\n[    8.169736] USB Video Class driver (1.1.1)\n\nRan this command to add the hex device ID on line three in the above output.\n\n$ uv4l --syslog-host localhost --driver uvc --device-id 05a3:9422\n\nI got this output indicating that the camera was indeed detected successfully.\n\n&lt;notice&gt; [core] Trying to loading driver 'uvc' from built-in drivers...\n&lt;notice&gt; [core] Loading driver 'uvc' from external plug-in's...\n&lt;notice&gt; [driver] Video functionality 'USB Camera' recognized at 05a3:9422\n&lt;notice&gt; [core] Device detected!\n&lt;notice&gt; [core] Registering device node /dev/uv4l\n\nChanged driver to uvc in /etc/uv4l/uv4l-raspicam.conf\n\ndriver = uvc\n\nReboot the Raspberry Pi using\n\n$ sudo reboot\nOnce the Pi is up, check the following url (note the port is not 8080! It’s http://pi_ip_address:8090/) on the client where you want to receive the stream – in my case, this is my laptop. I used chrome as my browser. You should see a page like this.\n\n\n\nMain page of the UV4L streaming server\n\n\nClick on the WebRTC (first icon) on the page and you end up with a page where you can connect to the stream on the client.\n\n\n\nWebRTC page of the UV4L streaming server\n\n\nYou will see a button called Call (in green) in the bottom left part of the page. Just click it and you should start receiving the video stream like this. \n\nI have pointed the camera to the Pi since I wanted to check the delay in frames over my WiFi using the periodic blinking light on the LAN cable. The delay I noticed in video is acceptable for my purpose. As of now, you would notice that the audio is still not streaming."
+  },
+  {
+    "objectID": "posts/usb-camera-and-audio-streaming-pi/index.html#step-3-configure-usb-microphone",
+    "href": "posts/usb-camera-and-audio-streaming-pi/index.html#step-3-configure-usb-microphone",
+    "title": "Live Streaming Video + Audio on Raspberry Pi using USB Camera and Microphone",
+    "section": "Step 3: Configure USB microphone",
+    "text": "Step 3: Configure USB microphone\n\nFollow these instructions partially to find your USB microphone and include it in the WebRTC server configuration. Here are steps I followed.\nI executed the following command\n\n$ arecord -L | grep CARD\ndefault:CARD=Camera\nsysdefault:CARD=Camera\nfront:CARD=Camera,DEV=0\nsurround21:CARD=Camera,DEV=0\nsurround40:CARD=Camera,DEV=0\nsurround41:CARD=Camera,DEV=0\nsurround50:CARD=Camera,DEV=0\nsurround51:CARD=Camera,DEV=0\nsurround71:CARD=Camera,DEV=0\niec958:CARD=Camera,DEV=0\ndmix:CARD=Camera,DEV=0\ndsnoop:CARD=Camera,DEV=0\nhw:CARD=Camera,DEV=0\nplughw:CARD=Camera,DEV=0\ndefault:CARD=Microphones\nsysdefault:CARD=Microphones\nfront:CARD=Microphones,DEV=0\nsurround21:CARD=Microphones,DEV=0\nsurround40:CARD=Microphones,DEV=0\nsurround41:CARD=Microphones,DEV=0\nsurround50:CARD=Microphones,DEV=0\nsurround51:CARD=Microphones,DEV=0\nsurround71:CARD=Microphones,DEV=0\niec958:CARD=Microphones,DEV=0\ndmix:CARD=Microphones,DEV=0\ndsnoop:CARD=Microphones,DEV=0\nhw:CARD=Microphones,DEV=0\nplughw:CARD=Microphones,DEV=0\n\nA bit tricky, you have to literally count the lines starting from zero to your microphone device in the last line plughw:CARD=Microphones,DEV=0.\nplughw:CARD=Microphones,DEV=0 is line 27 starting from zero for the first line.\nIn the file /etc/uv4l/uv4l-raspicam.conf, find the line that has the audio device index and set the index to the line number of you microphone. In my case, it’s 27.\n\nserver-option = --webrtc-recdevice-index=27\nReboot the Raspberry Pi and you should be able to access the Video + Audio stream from Raspberry Pi on your WiFi at http:pi_ip_address:8090/stream/webrtc"
+  },
+  {
+    "objectID": "posts/usb-camera-and-audio-streaming-pi/index.html#conclusion",
+    "href": "posts/usb-camera-and-audio-streaming-pi/index.html#conclusion",
+    "title": "Live Streaming Video + Audio on Raspberry Pi using USB Camera and Microphone",
+    "section": "Conclusion",
+    "text": "Conclusion\nThe setup of USB camera + USB microphone is something I had and wanted to utilize it without making additional purchases such as Pi Camera. This was a special requirement for me – there may be much simpler tools if you have a Pi Camera with you. This setup looks very reliable with millisecond level latency. Also, the service has been running for over a day as of my writing of this article."
+  },
+  {
+    "objectID": "posts/crazyflie-micro-uav/index.html",
+    "href": "posts/crazyflie-micro-uav/index.html",
+    "title": "Crazyflie2.1 Micro-UAV Assembly Experience",
     "section": "",
-    "text": "Understanding Object Tracking: A Hands-on Approach, Part 1\n\n\n\n\n\n\n\nobject tracking\n\n\ntracking by detection\n\n\nperception\n\n\n\n\n\n\n\n\n\n\n\nMar 20, 2022\n\n\n\n\n\n\n  \n\n\n\n\nLive Streaming Video + Audio on Raspberry Pi using USB Camera and Microphone\n\n\n\n\n\n\n\nbaby monitor\n\n\nraspberry pi\n\n\nusb camera\n\n\nusb microphone\n\n\n\n\n\n\n\n\n\n\n\nFeb 12, 2021\n\n\n\n\n\n\n  \n\n\n\n\nSimultaneous Localization and Mapping (SLAM) with Crazyflie\n\n\n\n\n\n\n\nSLAM\n\n\nUAV\n\n\nautonomous navigation\n\n\nCrazyflie\n\n\nperception\n\n\n\n\n\n\n\n\n\n\n\nDec 21, 2020\n\n\n\n\n\n\n  \n\n\n\n\nPorting Motion Planning Project to Crazyflie\n\n\n\n\n\n\n\nUAV\n\n\nmotion planning\n\n\nCrazyflie\n\n\n\n\n\n\n\n\n\n\n\nDec 20, 2020\n\n\n\n\n\n\n  \n\n\n\n\nPorting Backyard Flyer Project to Crazyflie\n\n\n\n\n\n\n\nUAV\n\n\nguided navigation\n\n\n\n\n\n\n\n\n\n\n\nNov 6, 2020\n\n\n\n\n\n\n  \n\n\n\n\nCrazyflie2.1 Micro-UAV Assembly Experience\n\n\n\n\n\n\n\nUAV\n\n\ncrazyflie assembly\n\n\ncrazyflie\n\n\n\n\n\n\n\n\n\n\n\nOct 2, 2020\n\n\n\n\n\n\n  \n\n\n\n\nDisparity Map Computation in Python and C++\n\n\n\n\n\n\n\ndepth estimation\n\n\nstereo vision from images\n\n\n\n\n\n\n\n\n\n\n\nMay 17, 2020\n\n\n\n\n\n\n  \n\n\n\n\nBuilding Tensorflow from Source on MacOS\n\n\n\n\n\n\n\ntensorflow\n\n\n\n\n\n\n\n\n\n\n\nMay 10, 2020\n\n\n\n\n\n\nNo matching items"
+    "text": "I’m in the process of wrapping up my Flying Car and Autonomous Flight Engineer Udacity nanodegree and thought of sharing my experience in porting some of the projects to a real drone a.k.a. UAV (Unmanned Aerial Vehicle). However, before porting any code to a UAV, I had to buy an UAV. Deciding on a specific UAV to buy was a hard decision to make since there are so many options. Someone like me starting out in this space of UAVs would have many questions. Among them, two major questions I had were: Should I build my own UAV? OR Should I buy a ready-to-fly UAV?\nAfter some searching around, I realized that one should answer the question Do you plan to use the UAV indoors or outdoors? to make any buying decision. If your answer is indoors, a micro-UAV is a good option for safety and ease of maneuverability. Since I had no intention of flying the UAV outdoors, I preferred a micro-UAV. If your answer is outdoors, you can still get a micro-UAV but prefer a sturdy one so that it can withstand the cross-winds without crashing! There are great blogs such as How to Build FPV Drone outlining various choices and the building process.\nI chose Crazyflie since:"
+  },
+  {
+    "objectID": "posts/crazyflie-micro-uav/index.html#getting-crazyflie",
+    "href": "posts/crazyflie-micro-uav/index.html#getting-crazyflie",
+    "title": "Crazyflie2.1 Micro-UAV Assembly Experience",
+    "section": "Getting Crazyflie",
+    "text": "Getting Crazyflie\nOnce I decided on the vehicle, I ordered Crazyflie2.1 from their website. I was excited and tracking it all the way from its home in Sweden to its new home here in Pittsburgh, United States. Crazyflie2.1 finally arrived!\n\n\n\nCrazyflie2.1 received from Crazyflie manufacturing location in Sweden"
+  },
+  {
+    "objectID": "posts/crazyflie-micro-uav/index.html#assembly",
+    "href": "posts/crazyflie-micro-uav/index.html#assembly",
+    "title": "Crazyflie2.1 Micro-UAV Assembly Experience",
+    "section": "Assembly",
+    "text": "Assembly\nTo understand the rationale for the suggested assembly, please refer the Hot-swap battery arrangement section. We need an assembly that minimizes hardware stress when we want to replace the battery. This implies that we don’t want to pull out the multi-ranger deck every time we want to replace the battery.\nThere are already great instructions on assembly and making first flight on Crazyflie website here. Here, I will highlight the differences for the hot-swap friendly assembly.\nHere is the crazyflie base after partial assembly. You need to pay attention to the propeller naming and the direction of propeller rotation while performing this assembly (already described well here).\n\n\n\nCrazyflie2.1 after adding the arms, motors, and propellers\n\n\n\nAdding the flow-deck\nFlow deck allows the crazyflie to approximate it’s position along the horizontal direction (x and y direction) using a camera that faces down to the floor. This gives a “sense” of lateral position awareness to Crazyflie. Further, the flow-deck has an additional sensor to measure height giving Crazyflie a “sense” of height from the ground (z direction). With flow-deck added, Crazyflie now can approximate it’s 3D position when flying allowing it to be commanded to new position in 3D coordinates.\n\n\n\nCrazyflie2.1 flow-deck added facing down to the floor\n\n\n\n\nAdding the multi-ranger deck\nMulti-ranger deck is fitted on top of the Crazyflie but all the way down the pin unlike what is shown on Crazyflie website. That is, we place the battery on top of multi-ranger deck instead of under multi-ranger deck. One caveat is that Crazyflie cannot sense range in the upward direction – this should be fine till you stay away from the ceiling of your indoor space.\n\n\n\nCrazyflie2.1 multi-ranger deck added on top and pushed all the way down\n\n\nA rubber strap securely holds the battery as shown enabling us to hot-swap the battery without messing with the multi-ranger deck. I had to learn this the hard way – initially I had to remove the multi-ranger deck every time I had to replace the battery which was very time-consuming. This arrangement really helped me for making continuous flights by hot-swapping the battery with ease.\n\n\n\nCrazyflie2.1 with flow-deck, multi-ranger deck, and battery setup suitable for hot-swap – it’s ready to fly"
+  },
+  {
+    "objectID": "posts/crazyflie-micro-uav/index.html#hot-swap-battery-arrangement",
+    "href": "posts/crazyflie-micro-uav/index.html#hot-swap-battery-arrangement",
+    "title": "Crazyflie2.1 Micro-UAV Assembly Experience",
+    "section": "Hot-swap battery arrangement",
+    "text": "Hot-swap battery arrangement\nBattery supplied with Crazyflie2.1 is a 250 mAh battery with a flying time of around 7 minutes. This is good enough for indoor flights but if you like to skip waiting 40 minutes to charge the battery, one option is to hot-swap the battery (in other words, just replace the battery). I wanted to assemble the Crazyflie such that I can do this hot-swap with minimum effort. Specifically, I did not want to mess with the ranger deck every time I wanted to change the battery since in the standard configuration, the battery is firmly held in place by the ranger deck."
+  },
+  {
+    "objectID": "posts/crazyflie-micro-uav/index.html#conclusion",
+    "href": "posts/crazyflie-micro-uav/index.html#conclusion",
+    "title": "Crazyflie2.1 Micro-UAV Assembly Experience",
+    "section": "Conclusion",
+    "text": "Conclusion\nI have been using the above assembly of Crazyflie2.1 for over four months now. I’m quite impressed by the hardware and firmware of Crazyflie2.1 – especially, their python library is very well documented with examples. I have been able to port some of the projects from my nanodegree to work on Crazyflie. In the future posts, I will provide more details on porting motion planning and drone controls project to Crazyflie."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "I’m a Researcher and Engineer working on Machine Learning and Computer Vision related topics. I enjoy working on fun projects in my spare time. I like to bike and hike if I’m not doing any projects.\nI have experience developing research projects ground-up in both academia and industry. Here is my older webpage summarizing my PhD life.\nRecently, I have started to explore ideas of interactive teaching experiences to teach skills using deliberate practice principles. I strongly believe that meeting a good teacher will be a life changing experience for students. Keeping students motivated to learn is crucial and technology has a great potential to deliver great teaching and learning experiences."
   }
 ]
