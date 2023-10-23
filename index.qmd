@@ -1,5 +1,5 @@
 ---
-title: "Hello! I'm Pramod 👋 weclome to my blog!"
+title: "Hello! I'm Pramod 👋 Welcome to my blog!"
 listing:
   contents: posts
   sort: "date desc"
